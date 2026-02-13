@@ -1,0 +1,43 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Ensure npm supports OIDC
+        run: |
+          npm install -g npm@latest
+          echo "npm $(npm --version)"
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test:coverage
+
+      - name: Publish @huly-embed/core
+        run: npm publish --workspace packages/core --provenance --access public
+
+      - name: Publish @huly-embed/angular
+        working-directory: packages/angular/dist
+        run: npm publish --provenance --access public
+
+      - name: Publish @huly-embed/react
+        run: npm publish --workspace packages/react --provenance --access public

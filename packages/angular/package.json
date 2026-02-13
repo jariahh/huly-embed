@@ -1,0 +1,41 @@
+{
+  "name": "@huly-embed/angular",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json",
+    "clean": "rimraf dist",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=17.0.0",
+    "@angular/common": ">=17.0.0",
+    "rxjs": ">=7.0.0",
+    "@huly-embed/core": ">=0.1.0"
+  },
+  "devDependencies": {
+    "@angular/compiler": "^17.3.0",
+    "@angular/compiler-cli": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@angular/common": "^17.3.0",
+    "@angular/platform-browser": "^17.3.0",
+    "ng-packagr": "^17.3.0",
+    "rxjs": "^7.8.0",
+    "typescript": "~5.4.0",
+    "zone.js": "^0.14.0",
+    "rimraf": "^5.0.0",
+    "vitest": "^3.0.0",
+    "@vitest/coverage-v8": "^3.0.0",
+    "happy-dom": "^16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jariahh/huly-embed",
+    "directory": "packages/angular"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "license": "EPL-2.0"
+}
