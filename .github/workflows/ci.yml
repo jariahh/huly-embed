@@ -18,20 +18,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-
       - run: npm install
       - run: npm run build
-
-      - name: Cache build
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: |
-            packages/core/dist/
-            packages/angular/dist/
-            packages/react/dist/
-            node_modules/
-          retention-days: 1
 
   test-core:
     name: test core
@@ -42,11 +30,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-output
-
+      - run: npm install
+      - run: npm run build -w @jariahh/core
       - run: npx vitest run --project @jariahh/core --coverage
       - uses: actions/upload-artifact@v4
         if: always()
@@ -63,11 +48,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-output
-
+      - run: npm install
+      - run: npm run build
       - run: npx vitest run --project @jariahh/angular --coverage
       - uses: actions/upload-artifact@v4
         if: always()
@@ -84,11 +66,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-output
-
+      - run: npm install
+      - run: npm run build
       - run: npx vitest run --project @jariahh/react --coverage
       - uses: actions/upload-artifact@v4
         if: always()
@@ -105,7 +84,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - run: npm install
       - run: npm run build
       - run: npm test
