@@ -7,8 +7,8 @@ import type {
   HulyIssueSelectedEvent,
   HulyResizeEvent,
   HulyEmbedError,
-} from '@huly-embed/core';
-import { EmbedMessageTypes } from '@huly-embed/core';
+} from '@jariahh/core';
+import { EmbedMessageTypes } from '@jariahh/core';
 import { useHulyEmbed } from '../hooks/useHulyEmbed.js';
 import { useHulyMessages } from '../hooks/useHulyMessages.js';
 

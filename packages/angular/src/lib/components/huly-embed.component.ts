@@ -20,8 +20,8 @@ import type {
   HulyResizeEvent,
   HulyEmbedError,
   EmbedTokenResponse,
-} from '@huly-embed/core';
-import { EmbedMessageTypes } from '@huly-embed/core';
+} from '@jariahh/core';
+import { EmbedMessageTypes } from '@jariahh/core';
 import { HulyEmbedService } from '../services/huly-embed.service';
 import { HulyMessageService } from '../services/huly-message.service';
 

@@ -1,6 +1,6 @@
 import { Injectable, Inject, NgZone, OnDestroy } from '@angular/core';
 import { Subject, type Observable } from 'rxjs';
-import { type HulyEmbedMessage, isHulyMessage, parseHulyMessage } from '@huly-embed/core';
+import { type HulyEmbedMessage, isHulyMessage, parseHulyMessage } from '@jariahh/core';
 import { HulyEmbedService } from './huly-embed.service';
 
 @Injectable()

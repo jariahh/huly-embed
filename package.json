@@ -1,5 +1,5 @@
 {
-  "name": "@huly-embed/root",
+  "name": "@jariahh/root",
   "private": true,
   "workspaces": [
     "packages/core",
@@ -7,8 +7,8 @@
     "packages/react"
   ],
   "scripts": {
-    "build": "npm run build -w @huly-embed/core && npm run build -w @huly-embed/angular && npm run build -w @huly-embed/react",
-    "clean": "npm run clean -w @huly-embed/core && npm run clean -w @huly-embed/angular && npm run clean -w @huly-embed/react",
+    "build": "npm run build -w @jariahh/core && npm run build -w @jariahh/angular && npm run build -w @jariahh/react",
+    "clean": "npm run clean -w @jariahh/core && npm run clean -w @jariahh/angular && npm run clean -w @jariahh/react",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage"
   },

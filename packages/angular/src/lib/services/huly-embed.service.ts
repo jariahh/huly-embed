@@ -7,7 +7,7 @@ import {
   buildEmbedUrl,
   createTokenRefresher,
   getParentOrigin,
-} from '@huly-embed/core';
+} from '@jariahh/core';
 import { HULY_EMBED_CONFIG } from '../providers/huly-embed.config';
 
 @Injectable()

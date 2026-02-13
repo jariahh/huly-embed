@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import type { HulyEmbedMessage } from '@huly-embed/core';
-import { isHulyMessage, parseHulyMessage } from '@huly-embed/core';
+import type { HulyEmbedMessage } from '@jariahh/core';
+import { isHulyMessage, parseHulyMessage } from '@jariahh/core';
 import { useHulyEmbedConfig } from '../context/HulyEmbedProvider.js';
 
 export function useHulyMessages(handler: (message: HulyEmbedMessage) => void): void {

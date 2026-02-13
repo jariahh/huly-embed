@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Subject } from 'rxjs';
-import type { HulyEmbedMessage } from '@huly-embed/core';
+import type { HulyEmbedMessage } from '@jariahh/core';
 import { HulyEmbedComponent } from '../components/huly-embed.component';
 
 describe('HulyEmbedComponent', () => {

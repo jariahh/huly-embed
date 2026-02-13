@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, renderHook } from '@testing-library/react';
-import type { HulyEmbedConfig } from '@huly-embed/core';
+import type { HulyEmbedConfig } from '@jariahh/core';
 import { HulyEmbedProvider, useHulyEmbedConfig } from '../context/HulyEmbedProvider.js';
 
 const testConfig: HulyEmbedConfig = {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { HulyEmbedComponent, EmbedTokenResponse } from '@huly-embed/core';
-import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher, getParentOrigin } from '@huly-embed/core';
+import type { HulyEmbedComponent, EmbedTokenResponse } from '@jariahh/core';
+import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher, getParentOrigin } from '@jariahh/core';
 import { useHulyEmbedConfig } from '../context/HulyEmbedProvider.js';
 
 export interface UseHulyEmbedOptions {

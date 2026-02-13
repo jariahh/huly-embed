@@ -1,5 +1,5 @@
 import { createContext, useContext, type ReactNode } from 'react';
-import type { HulyEmbedConfig } from '@huly-embed/core';
+import type { HulyEmbedConfig } from '@jariahh/core';
 
 const HulyEmbedContext = createContext<HulyEmbedConfig | null>(null);
 

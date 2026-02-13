@@ -32,12 +32,12 @@ jobs:
       - run: npm run build
       - run: npm run test:coverage
 
-      - name: Publish @huly-embed/core
+      - name: Publish @jariahh/core
         run: npm publish --workspace packages/core --provenance --access public
 
-      - name: Publish @huly-embed/angular
+      - name: Publish @jariahh/angular
         working-directory: packages/angular/dist
         run: npm publish --provenance --access public
 
-      - name: Publish @huly-embed/react
+      - name: Publish @jariahh/react
         run: npm publish --workspace packages/react --provenance --access public

@@ -1,4 +1,4 @@
-import type { HulyIssueCreatedEvent, HulyIssueCancelledEvent } from '@huly-embed/core';
+import type { HulyIssueCreatedEvent, HulyIssueCancelledEvent } from '@jariahh/core';
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyCreateIssueProps

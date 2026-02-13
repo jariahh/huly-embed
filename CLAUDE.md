@@ -25,9 +25,9 @@ npm run lint                   # Lint all packages
 
 ### Three-Package Monorepo (`packages/`)
 
-- **`core/`** (`@huly-embed/core`) — Framework-agnostic shared types, postMessage protocol helpers, and token refresh logic. **No Angular or React imports allowed.**
-- **`angular/`** (`@huly-embed/angular`) — Angular 17+ standalone components (no NgModule), services, and `provideHulyEmbed()` DI setup. Uses signals where appropriate.
-- **`react/`** (`@huly-embed/react`) — React 18+ functional components, hooks (`useHulyEmbed`, `useHulyMessages`), and `<HulyEmbedProvider>` context.
+- **`core/`** (`@jariahh/core`) — Framework-agnostic shared types, postMessage protocol helpers, and token refresh logic. **No Angular or React imports allowed.**
+- **`angular/`** (`@jariahh/angular`) — Angular 17+ standalone components (no NgModule), services, and `provideHulyEmbed()` DI setup. Uses signals where appropriate.
+- **`react/`** (`@jariahh/react`) — React 18+ functional components, hooks (`useHulyEmbed`, `useHulyMessages`), and `<HulyEmbedProvider>` context.
 
 ### How Components Work
 
@@ -73,7 +73,7 @@ Users never have Huly accounts. A service account (`alchemy-bot`) creates/querie
 - Always validate postMessage origins
 - Never expose embed tokens to end users in a way they could reuse
 
-## Shared Types (`@huly-embed/core`)
+## Shared Types (`@jariahh/core`)
 
 ```typescript
 interface HulyEmbedConfig {

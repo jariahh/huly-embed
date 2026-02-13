@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { HulyMessageService } from '../services/huly-message.service';
 
-vi.mock('@huly-embed/core', () => ({
+vi.mock('@jariahh/core', () => ({
   isHulyMessage: vi.fn(),
   parseHulyMessage: vi.fn(),
 }));
 
-import { isHulyMessage, parseHulyMessage } from '@huly-embed/core';
+import { isHulyMessage, parseHulyMessage } from '@jariahh/core';
 
 const mockIsHulyMessage = vi.mocked(isHulyMessage);
 const mockParseHulyMessage = vi.mocked(parseHulyMessage);

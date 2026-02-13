@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import type { HulyIssueSelectedEvent } from '@huly-embed/core';
+import type { HulyIssueSelectedEvent } from '@jariahh/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
 @Component({

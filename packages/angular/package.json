@@ -1,5 +1,5 @@
 {
-  "name": "@huly-embed/angular",
+  "name": "@jariahh/angular",
   "version": "0.1.0",
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
@@ -11,7 +11,7 @@
     "@angular/core": ">=17.0.0",
     "@angular/common": ">=17.0.0",
     "rxjs": ">=7.0.0",
-    "@huly-embed/core": ">=0.1.0"
+    "@jariahh/core": ">=0.1.0"
   },
   "devDependencies": {
     "@angular/compiler": "^17.3.0",
