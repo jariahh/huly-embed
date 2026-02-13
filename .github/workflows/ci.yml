@@ -10,31 +10,119 @@ permissions:
   contents: read
 
 jobs:
-  build-and-test:
-    name: Node ${{ matrix.node-version }}
+  build:
+    name: build
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20, 22]
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22
 
       - run: npm install
       - run: npm run build
-      - run: npm run test:coverage
 
-      - name: Upload coverage
-        if: matrix.node-version == 22 && always()
+      - name: Cache build
         uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: build-output
           path: |
-            packages/core/coverage/
-            packages/angular/coverage/
-            packages/react/coverage/
+            packages/core/dist/
+            packages/angular/dist/
+            packages/react/dist/
+            node_modules/
+          retention-days: 1
+
+  test-core:
+    name: test core
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - run: npx vitest run --project @jariahh/core --coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-core
+          path: packages/core/coverage/
+
+  test-angular:
+    name: test angular
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - run: npx vitest run --project @jariahh/angular --coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-angular
+          path: packages/angular/coverage/
+
+  test-react:
+    name: test react
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - run: npx vitest run --project @jariahh/react --coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-react
+          path: packages/react/coverage/
+
+  compat:
+    name: node 20 compat
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install
+      - run: npm run build
+      - run: npm test
+
+  quality-gate:
+    name: quality gate
+    needs: [test-core, test-angular, test-react, compat]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          if [ "${{ needs.test-core.result }}" != "success" ] || \
+             [ "${{ needs.test-angular.result }}" != "success" ] || \
+             [ "${{ needs.test-react.result }}" != "success" ] || \
+             [ "${{ needs.compat.result }}" != "success" ]; then
+            echo "One or more jobs failed"
+            exit 1
+          fi
+          echo "All checks passed"
