@@ -6,6 +6,7 @@ import { HulyEmbedComponent } from '../components/huly-embed.component';
 describe('HulyEmbedComponent', () => {
   let mockEmbedService: any;
   let mockMessageService: any;
+  let mockSanitizer: any;
   let messages$: Subject<HulyEmbedMessage>;
   let comp: HulyEmbedComponent;
 
@@ -17,7 +18,10 @@ describe('HulyEmbedComponent', () => {
       createRefresher: vi.fn().mockReturnValue(vi.fn()),
     };
     mockMessageService = { messages$: messages$.asObservable() };
-    comp = new HulyEmbedComponent(mockEmbedService, mockMessageService);
+    mockSanitizer = {
+      bypassSecurityTrustResourceUrl: vi.fn((url: string) => `safe:${url}`),
+    };
+    comp = new HulyEmbedComponent(mockEmbedService, mockMessageService, mockSanitizer);
     comp.component = 'create-issue';
   });
 
@@ -31,7 +35,7 @@ describe('HulyEmbedComponent', () => {
     comp.ngOnInit();
     // Wait for async loadEmbed
     await vi.waitFor(() => {
-      expect(comp.embedUrl()).toBe('https://huly.test/embed?token=test');
+      expect(comp.embedUrl()).toBe('safe:https://huly.test/embed?token=test');
     });
     expect(mockEmbedService.fetchToken).toHaveBeenCalledWith('create-issue');
     expect(mockEmbedService.buildUrl).toHaveBeenCalledWith('create-issue', 'test-token', {

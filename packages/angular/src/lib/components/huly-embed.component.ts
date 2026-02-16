@@ -11,6 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { type Subscription } from 'rxjs';
 import type {
   HulyEmbedComponent as EmbedComponentType,
@@ -68,7 +69,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
 
   @ViewChild('embedIframe') iframeRef?: ElementRef<HTMLIFrameElement>;
 
-  readonly embedUrl = signal<string | null>(null);
+  readonly embedUrl = signal<SafeResourceUrl | null>(null);
   readonly loading = signal(true);
   readonly errorMessage = signal<string | null>(null);
   readonly iframeHeight = signal(400);
@@ -78,7 +79,8 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly embedService: HulyEmbedService,
-    private readonly messageService: HulyMessageService
+    private readonly messageService: HulyMessageService,
+    private readonly sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -130,7 +132,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
         externalUser: this.externalUser,
       });
 
-      this.embedUrl.set(url);
+      this.embedUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
 
       this.destroyRefresher?.();
       this.destroyRefresher = this.embedService.createRefresher(
@@ -143,7 +145,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
             externalUser: this.externalUser,
           });
           this.loading.set(true);
-          this.embedUrl.set(newUrl);
+          this.embedUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(newUrl));
         },
         (error: Error) => {
           this.errorMessage.set(error.message);
