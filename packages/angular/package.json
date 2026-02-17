@@ -34,8 +34,7 @@
     "directory": "packages/angular"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "license": "EPL-2.0"
 }
