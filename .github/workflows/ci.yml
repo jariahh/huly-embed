@@ -169,10 +169,10 @@ jobs:
       - name: Commit and push version bump
         if: steps.check.outputs.skip != 'true'
         run: |
-          git fetch origin main
-          git rebase origin/main
           git add packages/*/package.json
           git commit -m "chore: release v${{ steps.bump.outputs.version }}"
+          git fetch origin main
+          git rebase origin/main
           git tag "v${{ steps.bump.outputs.version }}"
           git push origin main
           git push origin "v${{ steps.bump.outputs.version }}"
