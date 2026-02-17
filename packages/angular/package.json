@@ -1,6 +1,6 @@
 {
   "name": "@huly-embed/angular",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
     "clean": "rimraf dist",
