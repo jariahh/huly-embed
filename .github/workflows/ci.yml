@@ -131,7 +131,20 @@ jobs:
 
       - run: npm install
 
+      - name: Check if release is needed
+        id: check
+        run: |
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          # Skip release for version-bump commits to avoid infinite loop
+          if echo "$COMMIT_MSG" | grep -q '^chore: release v'; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping: commit is a version bump"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Bump version
+        if: steps.check.outputs.skip != 'true'
         id: bump
         run: |
           COMMIT_MSG="${{ github.event.head_commit.message }}"
@@ -153,16 +166,23 @@ jobs:
           echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
           echo "Bumped $CURRENT → $NEW_VERSION ($BUMP)"
 
-      - name: Commit version bump
+      - name: Commit and push version bump
+        if: steps.check.outputs.skip != 'true'
         run: |
+          git fetch origin main
+          git rebase origin/main
           git add packages/*/package.json
           git commit -m "chore: release v${{ steps.bump.outputs.version }}"
           git tag "v${{ steps.bump.outputs.version }}"
-          git push origin main --tags
+          git push origin main
+          git push origin "v${{ steps.bump.outputs.version }}"
 
-      - run: npm run build
+      - name: Build
+        if: steps.check.outputs.skip != 'true'
+        run: npm run build
 
       - name: Create GitHub release
+        if: steps.check.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -171,11 +191,14 @@ jobs:
             --generate-notes
 
       - name: Publish @huly-embed/core
+        if: steps.check.outputs.skip != 'true'
         run: npm publish --workspace packages/core --provenance --access public
 
       - name: Publish @huly-embed/angular
+        if: steps.check.outputs.skip != 'true'
         working-directory: packages/angular/dist
         run: npm publish --provenance --access public
 
       - name: Publish @huly-embed/react
+        if: steps.check.outputs.skip != 'true'
         run: npm publish --workspace packages/react --provenance --access public
