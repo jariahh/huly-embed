@@ -15,14 +15,16 @@ import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
 import { type Subscription } from 'rxjs';
 import type {
   HulyEmbedComponent as EmbedComponentType,
+  EmbedHideableField,
   HulyIssueCreatedEvent,
   HulyIssueCancelledEvent,
   HulyIssueSelectedEvent,
+  HulyIssueClosedEvent,
   HulyResizeEvent,
   HulyEmbedError,
   EmbedTokenResponse,
-} from '@jariahh/core';
-import { EmbedMessageTypes } from '@jariahh/core';
+} from '@huly-embed/core';
+import { EmbedMessageTypes } from '@huly-embed/core';
 import { HulyEmbedService } from '../services/huly-embed.service';
 import { HulyMessageService } from '../services/huly-message.service';
 
@@ -59,11 +61,13 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
   @Input() project?: string;
   @Input() issueId?: string;
   @Input() externalUser?: string;
+  @Input() hideFields?: EmbedHideableField[];
 
   @Output() readonly ready = new EventEmitter<void>();
   @Output() readonly issueCreated = new EventEmitter<HulyIssueCreatedEvent>();
   @Output() readonly issueCancelled = new EventEmitter<HulyIssueCancelledEvent>();
   @Output() readonly issueSelected = new EventEmitter<HulyIssueSelectedEvent>();
+  @Output() readonly issueClosed = new EventEmitter<HulyIssueClosedEvent>();
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
   @Output() readonly embedError = new EventEmitter<HulyEmbedError>();
 
@@ -100,6 +104,9 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
         case EmbedMessageTypes.IssueSelected:
           this.issueSelected.emit(message);
           break;
+        case EmbedMessageTypes.IssueClosed:
+          this.issueClosed.emit(message);
+          break;
         case EmbedMessageTypes.Resize:
           this.iframeHeight.set(message.height);
           this.resized.emit(message);
@@ -130,6 +137,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
         project: this.project,
         issue: this.issueId,
         externalUser: this.externalUser,
+        hideFields: this.hideFields,
       });
 
       this.embedUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
@@ -143,6 +151,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
             project: this.project,
             issue: this.issueId,
             externalUser: this.externalUser,
+            hideFields: this.hideFields,
           });
           this.loading.set(true);
           this.embedUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(newUrl));

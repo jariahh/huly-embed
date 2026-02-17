@@ -2,12 +2,13 @@ import { Injectable, Inject } from '@angular/core';
 import {
   type HulyEmbedConfig,
   type HulyEmbedComponent,
+  type EmbedHideableField,
   type EmbedTokenResponse,
   fetchEmbedToken,
   buildEmbedUrl,
   createTokenRefresher,
   getParentOrigin,
-} from '@jariahh/core';
+} from '@huly-embed/core';
 import { HULY_EMBED_CONFIG } from '../providers/huly-embed.config';
 
 @Injectable()
@@ -27,7 +28,7 @@ export class HulyEmbedService {
   buildUrl(
     component: HulyEmbedComponent,
     token: string,
-    options?: { project?: string; issue?: string; externalUser?: string }
+    options?: { project?: string; issue?: string; externalUser?: string; hideFields?: EmbedHideableField[] }
   ): string {
     return buildEmbedUrl({
       hulyUrl: this.config.hulyUrl,
@@ -37,6 +38,7 @@ export class HulyEmbedService {
       issue: options?.issue,
       externalUser: options?.externalUser,
       parentOrigin: getParentOrigin(),
+      hideFields: options?.hideFields,
     });
   }
 

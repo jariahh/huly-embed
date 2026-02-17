@@ -1,4 +1,4 @@
-import type { HulyEmbedComponent } from './types.js';
+import type { HulyEmbedComponent, EmbedHideableField } from './types.js';
 
 export interface BuildEmbedUrlParams {
   hulyUrl: string;
@@ -8,6 +8,7 @@ export interface BuildEmbedUrlParams {
   issue?: string;
   externalUser?: string;
   parentOrigin?: string;
+  hideFields?: EmbedHideableField[];
 }
 
 export function buildEmbedUrl(params: BuildEmbedUrlParams): string {
@@ -27,6 +28,9 @@ export function buildEmbedUrl(params: BuildEmbedUrlParams): string {
   }
   if (params.parentOrigin) {
     url.searchParams.set('parentOrigin', params.parentOrigin);
+  }
+  if (params.hideFields && params.hideFields.length > 0) {
+    url.searchParams.set('hideFields', params.hideFields.join(','));
   }
 
   return url.toString();

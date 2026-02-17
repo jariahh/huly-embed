@@ -1,14 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { HulyEmbedService } from '../services/huly-embed.service';
 
-vi.mock('@jariahh/core', () => ({
+vi.mock('@huly-embed/core', () => ({
   fetchEmbedToken: vi.fn().mockResolvedValue({ token: 'mock-token', expiresIn: 3600 }),
   buildEmbedUrl: vi.fn().mockReturnValue('https://huly.test/embed?token=mock'),
   createTokenRefresher: vi.fn().mockReturnValue(vi.fn()),
   getParentOrigin: vi.fn().mockReturnValue('https://myapp.com'),
 }));
 
-import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher } from '@jariahh/core';
+import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher } from '@huly-embed/core';
 
 const baseConfig = {
   hulyUrl: 'https://huly.test',

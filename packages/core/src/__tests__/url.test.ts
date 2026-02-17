@@ -79,6 +79,35 @@ describe('buildEmbedUrl', () => {
     expect(url.searchParams.get('parentOrigin')).toBe('https://origin.com');
   });
 
+  it('includes hideFields as comma-separated param', () => {
+    const url = new URL(buildEmbedUrl({
+      hulyUrl: 'https://huly.test',
+      component: 'create-issue',
+      token: 'abc',
+      hideFields: ['status', 'priority', 'duedate'],
+    }));
+    expect(url.searchParams.get('hideFields')).toBe('status,priority,duedate');
+  });
+
+  it('omits hideFields when empty array', () => {
+    const url = new URL(buildEmbedUrl({
+      hulyUrl: 'https://huly.test',
+      component: 'create-issue',
+      token: 'abc',
+      hideFields: [],
+    }));
+    expect(url.searchParams.has('hideFields')).toBe(false);
+  });
+
+  it('omits hideFields when not provided', () => {
+    const url = new URL(buildEmbedUrl({
+      hulyUrl: 'https://huly.test',
+      component: 'create-issue',
+      token: 'abc',
+    }));
+    expect(url.searchParams.has('hideFields')).toBe(false);
+  });
+
   it('handles hulyUrl with trailing slash', () => {
     const url = buildEmbedUrl({
       hulyUrl: 'https://huly.test/',

@@ -4,6 +4,7 @@ export const EmbedMessageTypes = {
   Ready: 'huly-embed-ready',
   IssueCreated: 'huly-embed-issue-created',
   IssueSelected: 'huly-embed-issue-selected',
+  IssueClosed: 'huly-embed-issue-closed',
   Resize: 'huly-embed-resize',
   Error: 'huly-embed-error',
 } as const;
@@ -50,10 +51,16 @@ export function parseHulyMessage(event: MessageEvent): HulyEmbedMessage | null {
       return null;
 
     case EmbedMessageTypes.IssueSelected:
-      if (typeof data.issueId === 'string' && typeof data.identifier === 'string') {
-        return { type: data.type, issueId: data.issueId, identifier: data.identifier };
+      if (typeof data.identifier === 'string') {
+        return { type: data.type, identifier: data.identifier };
       }
       return null;
+
+    case EmbedMessageTypes.IssueClosed:
+      return {
+        type: data.type,
+        ...(typeof data.identifier === 'string' ? { identifier: data.identifier } : {}),
+      };
 
     case EmbedMessageTypes.Resize:
       if (typeof data.height === 'number') {

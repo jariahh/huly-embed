@@ -4,8 +4,8 @@ import { createElement, type ReactNode } from 'react';
 import { HulyEmbedProvider } from '../context/HulyEmbedProvider.js';
 import { HulyEmbed } from '../components/HulyEmbed.js';
 
-vi.mock('@jariahh/core', async () => {
-  const actual = await vi.importActual<typeof import('@jariahh/core')>('@jariahh/core');
+vi.mock('@huly-embed/core', async () => {
+  const actual = await vi.importActual<typeof import('@huly-embed/core')>('@huly-embed/core');
   return {
     ...actual,
     fetchEmbedToken: vi.fn(),
@@ -17,7 +17,7 @@ vi.mock('@jariahh/core', async () => {
   };
 });
 
-import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher, isHulyMessage, parseHulyMessage, EmbedMessageTypes } from '@jariahh/core';
+import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher, isHulyMessage, parseHulyMessage, EmbedMessageTypes } from '@huly-embed/core';
 
 const mockFetchToken = vi.mocked(fetchEmbedToken);
 const mockBuildUrl = vi.mocked(buildEmbedUrl);
@@ -167,6 +167,24 @@ describe('HulyEmbed', () => {
     listener(new MessageEvent('message', { data: msg, origin: 'https://huly.test' }));
 
     expect(onIssueCancelled).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onIssueClosed when IssueClosed message is received', async () => {
+    const onIssueClosed = vi.fn();
+    renderEmbed({ onIssueClosed });
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('iframe')).not.toBeNull();
+    });
+
+    const msg = { type: EmbedMessageTypes.IssueClosed as const, identifier: 'TEST-3' };
+    mockIsHulyMessage.mockReturnValueOnce(true);
+    mockParseHulyMessage.mockReturnValueOnce(msg);
+
+    const listener = addSpy.mock.calls.find(c => c[0] === 'message')![1] as EventListener;
+    listener(new MessageEvent('message', { data: msg, origin: 'https://huly.test' }));
+
+    expect(onIssueClosed).toHaveBeenCalledWith(msg);
   });
 
   it('calls onResize and updates iframe height', async () => {

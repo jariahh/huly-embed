@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { Subject } from 'rxjs';
-import type { HulyEmbedMessage } from '@jariahh/core';
+import type { HulyEmbedMessage } from '@huly-embed/core';
 import { HulyEmbedComponent } from '../components/huly-embed.component';
 
 describe('HulyEmbedComponent', () => {
@@ -107,7 +107,31 @@ describe('HulyEmbedComponent', () => {
     const spy = vi.fn();
     comp.issueSelected.subscribe(spy);
 
-    const msg = { type: 'huly-embed-issue-selected' as const, issueId: 'id2', identifier: 'TEST-2' };
+    const msg = { type: 'huly-embed-issue-selected' as const, identifier: 'TEST-2' };
+    messages$.next(msg);
+    expect(spy).toHaveBeenCalledWith(msg);
+  });
+
+  it('emits issueClosed on IssueClosed message', async () => {
+    comp.ngOnInit();
+    await vi.waitFor(() => expect(comp.embedUrl()).not.toBeNull());
+
+    const spy = vi.fn();
+    comp.issueClosed.subscribe(spy);
+
+    const msg = { type: 'huly-embed-issue-closed' as const, identifier: 'TEST-3' };
+    messages$.next(msg);
+    expect(spy).toHaveBeenCalledWith(msg);
+  });
+
+  it('emits issueClosed without identifier', async () => {
+    comp.ngOnInit();
+    await vi.waitFor(() => expect(comp.embedUrl()).not.toBeNull());
+
+    const spy = vi.fn();
+    comp.issueClosed.subscribe(spy);
+
+    const msg = { type: 'huly-embed-issue-closed' as const };
     messages$.next(msg);
     expect(spy).toHaveBeenCalledWith(msg);
   });

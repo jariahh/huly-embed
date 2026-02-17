@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import type { HulyIssueCreatedEvent, HulyIssueCancelledEvent } from '@jariahh/core';
+import type { HulyIssueCreatedEvent, HulyIssueCancelledEvent, EmbedHideableField } from '@huly-embed/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
 @Component({
@@ -12,6 +12,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="create-issue"
       [project]="project"
       [externalUser]="externalUser"
+      [hideFields]="hideFields"
       (issueCreated)="issueCreated.emit($event)"
       (issueCancelled)="issueCancelled.emit($event)"
     >
@@ -23,6 +24,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
 export class HulyCreateIssueComponent {
   @Input() project?: string;
   @Input() externalUser?: string;
+  @Input() hideFields?: EmbedHideableField[];
 
   @Output() readonly issueCreated = new EventEmitter<HulyIssueCreatedEvent>();
   @Output() readonly issueCancelled = new EventEmitter<HulyIssueCancelledEvent>();

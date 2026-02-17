@@ -4,8 +4,8 @@ import { createElement, type ReactNode } from 'react';
 import { HulyEmbedProvider } from '../context/HulyEmbedProvider.js';
 import { useHulyEmbed } from '../hooks/useHulyEmbed.js';
 
-vi.mock('@jariahh/core', async () => {
-  const actual = await vi.importActual<typeof import('@jariahh/core')>('@jariahh/core');
+vi.mock('@huly-embed/core', async () => {
+  const actual = await vi.importActual<typeof import('@huly-embed/core')>('@huly-embed/core');
   return {
     ...actual,
     fetchEmbedToken: vi.fn(),
@@ -15,7 +15,7 @@ vi.mock('@jariahh/core', async () => {
   };
 });
 
-import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher } from '@jariahh/core';
+import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher } from '@huly-embed/core';
 
 const mockFetchToken = vi.mocked(fetchEmbedToken);
 const mockBuildUrl = vi.mocked(buildEmbedUrl);

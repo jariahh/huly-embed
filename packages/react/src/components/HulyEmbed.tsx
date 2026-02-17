@@ -1,14 +1,16 @@
 import { useState, useCallback, type ReactNode } from 'react';
 import type {
   HulyEmbedComponent,
+  EmbedHideableField,
   HulyEmbedMessage,
   HulyIssueCreatedEvent,
   HulyIssueCancelledEvent,
   HulyIssueSelectedEvent,
+  HulyIssueClosedEvent,
   HulyResizeEvent,
   HulyEmbedError,
-} from '@jariahh/core';
-import { EmbedMessageTypes } from '@jariahh/core';
+} from '@huly-embed/core';
+import { EmbedMessageTypes } from '@huly-embed/core';
 import { useHulyEmbed } from '../hooks/useHulyEmbed.js';
 import { useHulyMessages } from '../hooks/useHulyMessages.js';
 
@@ -17,10 +19,12 @@ export interface HulyEmbedProps {
   project?: string;
   issue?: string;
   externalUser?: string;
+  hideFields?: EmbedHideableField[];
   onReady?: () => void;
   onIssueCreated?: (event: HulyIssueCreatedEvent) => void;
   onIssueCancelled?: (event: HulyIssueCancelledEvent) => void;
   onIssueSelected?: (event: HulyIssueSelectedEvent) => void;
+  onIssueClosed?: (event: HulyIssueClosedEvent) => void;
   onResize?: (event: HulyResizeEvent) => void;
   onError?: (event: HulyEmbedError) => void;
   loadingContent?: ReactNode;
@@ -32,10 +36,12 @@ export function HulyEmbed({
   project,
   issue,
   externalUser,
+  hideFields,
   onReady,
   onIssueCreated,
   onIssueCancelled,
   onIssueSelected,
+  onIssueClosed,
   onResize,
   onError,
   loadingContent,
@@ -46,6 +52,7 @@ export function HulyEmbed({
     project,
     issue,
     externalUser,
+    hideFields,
   });
 
   const [iframeHeight, setIframeHeight] = useState(400);
@@ -66,6 +73,9 @@ export function HulyEmbed({
         case EmbedMessageTypes.IssueSelected:
           onIssueSelected?.(message as HulyIssueSelectedEvent);
           break;
+        case EmbedMessageTypes.IssueClosed:
+          onIssueClosed?.(message as HulyIssueClosedEvent);
+          break;
         case EmbedMessageTypes.Resize:
           setIframeHeight((message as HulyResizeEvent).height);
           onResize?.(message as HulyResizeEvent);
@@ -75,7 +85,7 @@ export function HulyEmbed({
           break;
       }
     },
-    [onReady, onIssueCreated, onIssueCancelled, onIssueSelected, onResize, onError]
+    [onReady, onIssueCreated, onIssueCancelled, onIssueSelected, onIssueClosed, onResize, onError]
   );
 
   useHulyMessages(handleMessage);

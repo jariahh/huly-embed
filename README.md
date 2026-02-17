@@ -6,9 +6,9 @@ Embeddable Huly components for Angular and React. Drop ticket forms, issue lists
 
 | Package | Description | Install |
 |---|---|---|
-| `@jariahh/core` | Shared types, postMessage protocol, utilities | `npm i @jariahh/core` |
-| `@jariahh/angular` | Angular components, services, and provider | `npm i @jariahh/angular` |
-| `@jariahh/react` | React components, hooks, and context provider | `npm i @jariahh/react` |
+| `@huly-embed/core` | Shared types, postMessage protocol, utilities | `npm i @huly-embed/core` |
+| `@huly-embed/angular` | Angular components, services, and provider | `npm i @huly-embed/angular` |
+| `@huly-embed/react` | React components, hooks, and context provider | `npm i @huly-embed/react` |
 
 ## How It Works
 
@@ -22,8 +22,8 @@ Your App                          Huly Server (forked)
 ┌──────────────────────┐          ┌──────────────────┐
 │ <huly-create-issue /> │  iframe  │ /embed/          │
 │                      │ ──────> │  create-issue     │
-│ @jariahh/angular  │          │                  │
-│ @jariahh/react    │ <────── │  postMessage      │
+│ @huly-embed/angular  │          │                  │
+│ @huly-embed/react    │ <────── │  postMessage      │
 │                      │  events  │  (created, etc.)  │
 └──────────────────────┘          └──────────────────┘
 ```
@@ -34,7 +34,7 @@ Your App                          Huly Server (forked)
 
 ```typescript
 // app.config.ts
-import { provideHulyEmbed } from '@jariahh/angular';
+import { provideHulyEmbed } from '@huly-embed/angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -63,7 +63,7 @@ export const appConfig: ApplicationConfig = {
 
 ```tsx
 // App.tsx
-import { HulyEmbedProvider } from '@jariahh/react';
+import { HulyEmbedProvider } from '@huly-embed/react';
 
 function App() {
   return (
@@ -81,7 +81,7 @@ function App() {
 **2. Use anywhere — zero config per page**
 
 ```tsx
-import { HulyCreateIssue, HulyIssueList, HulyIssueDetail } from '@jariahh/react';
+import { HulyCreateIssue, HulyIssueList, HulyIssueDetail } from '@huly-embed/react';
 
 <HulyCreateIssue onIssueCreated={(e) => toast(`Created ${e.identifier}`)} />
 

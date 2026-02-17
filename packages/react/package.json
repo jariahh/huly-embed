@@ -1,5 +1,5 @@
 {
-  "name": "@jariahh/react",
+  "name": "@huly-embed/react",
   "version": "0.1.1",
   "type": "module",
   "main": "./dist/index.js",
@@ -20,7 +20,7 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "@jariahh/core": ">=0.1.0"
+    "@huly-embed/core": ">=0.1.0"
   },
   "devDependencies": {
     "react": "^18.3.0",

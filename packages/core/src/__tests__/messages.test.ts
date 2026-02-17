@@ -8,10 +8,11 @@ function makeEvent(data: unknown, origin = 'https://huly.test'): MessageEvent {
 const ALLOWED = ['https://huly.test'];
 
 describe('EmbedMessageTypes', () => {
-  it('has all 5 expected message types', () => {
+  it('has all 6 expected message types', () => {
     expect(EmbedMessageTypes.Ready).toBe('huly-embed-ready');
     expect(EmbedMessageTypes.IssueCreated).toBe('huly-embed-issue-created');
     expect(EmbedMessageTypes.IssueSelected).toBe('huly-embed-issue-selected');
+    expect(EmbedMessageTypes.IssueClosed).toBe('huly-embed-issue-closed');
     expect(EmbedMessageTypes.Resize).toBe('huly-embed-resize');
     expect(EmbedMessageTypes.Error).toBe('huly-embed-error');
   });
@@ -88,15 +89,29 @@ describe('parseHulyMessage', () => {
     expect(parseHulyMessage(makeEvent({ type: 'huly-embed-issue-created' }))).toBeNull();
   });
 
-  it('parses IssueSelected', () => {
+  it('parses IssueSelected with identifier only', () => {
     const result = parseHulyMessage(
-      makeEvent({ type: 'huly-embed-issue-selected', issueId: 'id2', identifier: 'TEST-2' })
+      makeEvent({ type: 'huly-embed-issue-selected', identifier: 'TEST-2' })
     );
-    expect(result).toEqual({ type: 'huly-embed-issue-selected', issueId: 'id2', identifier: 'TEST-2' });
+    expect(result).toEqual({ type: 'huly-embed-issue-selected', identifier: 'TEST-2' });
   });
 
-  it('returns null for IssueSelected with missing fields', () => {
+  it('returns null for IssueSelected with missing identifier', () => {
     expect(parseHulyMessage(makeEvent({ type: 'huly-embed-issue-selected' }))).toBeNull();
+  });
+
+  it('parses IssueClosed with identifier', () => {
+    const result = parseHulyMessage(
+      makeEvent({ type: 'huly-embed-issue-closed', identifier: 'TEST-3' })
+    );
+    expect(result).toEqual({ type: 'huly-embed-issue-closed', identifier: 'TEST-3' });
+  });
+
+  it('parses IssueClosed without identifier', () => {
+    const result = parseHulyMessage(
+      makeEvent({ type: 'huly-embed-issue-closed' })
+    );
+    expect(result).toEqual({ type: 'huly-embed-issue-closed' });
   });
 
   it('parses Resize', () => {

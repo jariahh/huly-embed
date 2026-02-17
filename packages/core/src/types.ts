@@ -8,6 +8,8 @@ export interface HulyEmbedConfig {
 
 export type HulyEmbedComponent = 'create-issue' | 'issue-list' | 'issue-detail' | 'kanban' | 'comments';
 
+export type EmbedHideableField = 'status' | 'priority' | 'assignee' | 'estimation' | 'milestone' | 'duedate' | 'parent';
+
 export interface EmbedTokenResponse {
   token: string;
   expiresIn: number;
@@ -21,17 +23,24 @@ export interface HulyIssueCreatedEvent {
   type: 'huly-embed-issue-created';
   issueId: string;
   identifier: string;
+  cancelled?: never;
 }
 
 export interface HulyIssueCancelledEvent {
   type: 'huly-embed-issue-created';
   cancelled: true;
+  issueId?: never;
+  identifier?: never;
 }
 
 export interface HulyIssueSelectedEvent {
   type: 'huly-embed-issue-selected';
-  issueId: string;
   identifier: string;
+}
+
+export interface HulyIssueClosedEvent {
+  type: 'huly-embed-issue-closed';
+  identifier?: string;
 }
 
 export interface HulyResizeEvent {
@@ -49,6 +58,7 @@ export type HulyEmbedMessage =
   | HulyIssueCreatedEvent
   | HulyIssueCancelledEvent
   | HulyIssueSelectedEvent
+  | HulyIssueClosedEvent
   | HulyResizeEvent
   | HulyEmbedError;
 

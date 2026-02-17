@@ -1,4 +1,4 @@
-import type { HulyIssueSelectedEvent } from '@jariahh/core';
+import type { HulyIssueSelectedEvent } from '@huly-embed/core';
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyKanbanProps

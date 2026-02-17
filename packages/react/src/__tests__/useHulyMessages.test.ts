@@ -4,8 +4,8 @@ import { createElement, type ReactNode } from 'react';
 import { HulyEmbedProvider } from '../context/HulyEmbedProvider.js';
 import { useHulyMessages } from '../hooks/useHulyMessages.js';
 
-vi.mock('@jariahh/core', async () => {
-  const actual = await vi.importActual<typeof import('@jariahh/core')>('@jariahh/core');
+vi.mock('@huly-embed/core', async () => {
+  const actual = await vi.importActual<typeof import('@huly-embed/core')>('@huly-embed/core');
   return {
     ...actual,
     isHulyMessage: vi.fn(),
@@ -13,7 +13,7 @@ vi.mock('@jariahh/core', async () => {
   };
 });
 
-import { isHulyMessage, parseHulyMessage } from '@jariahh/core';
+import { isHulyMessage, parseHulyMessage } from '@huly-embed/core';
 
 const mockIsHulyMessage = vi.mocked(isHulyMessage);
 const mockParseHulyMessage = vi.mocked(parseHulyMessage);

@@ -1,11 +1,13 @@
 export type {
   HulyEmbedConfig,
   HulyEmbedComponent,
+  EmbedHideableField,
   EmbedTokenResponse,
   HulyReadyEvent,
   HulyIssueCreatedEvent,
   HulyIssueCancelledEvent,
   HulyIssueSelectedEvent,
+  HulyIssueClosedEvent,
   HulyResizeEvent,
   HulyEmbedError,
   HulyEmbedMessage,

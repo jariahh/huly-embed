@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { HulyEmbedComponent, EmbedTokenResponse } from '@jariahh/core';
-import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher, getParentOrigin } from '@jariahh/core';
+import type { HulyEmbedComponent, EmbedHideableField, EmbedTokenResponse } from '@huly-embed/core';
+import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher, getParentOrigin } from '@huly-embed/core';
 import { useHulyEmbedConfig } from '../context/HulyEmbedProvider.js';
 
 export interface UseHulyEmbedOptions {
@@ -8,6 +8,7 @@ export interface UseHulyEmbedOptions {
   project?: string;
   issue?: string;
   externalUser?: string;
+  hideFields?: EmbedHideableField[];
 }
 
 export interface UseHulyEmbedResult {
@@ -35,8 +36,9 @@ export function useHulyEmbed(options: UseHulyEmbedOptions): UseHulyEmbedResult {
         issue: options.issue,
         externalUser: options.externalUser,
         parentOrigin: getParentOrigin(),
+        hideFields: options.hideFields,
       }),
-    [config.hulyUrl, config.defaultProject, options.component, options.project, options.issue, options.externalUser]
+    [config.hulyUrl, config.defaultProject, options.component, options.project, options.issue, options.externalUser, options.hideFields]
   );
 
   useEffect(() => {

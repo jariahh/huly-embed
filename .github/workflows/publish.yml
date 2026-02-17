@@ -1,9 +1,12 @@
-name: Publish
+name: Publish (manual)
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git tag to publish (e.g. v0.2.0). Defaults to latest tag.'
+        required: false
+        type: string
 
 permissions: {}
 
@@ -16,6 +19,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
 
       - uses: actions/setup-node@v4
         with:
@@ -29,12 +34,12 @@ jobs:
       - run: npm run build
       - run: npm run test:coverage
 
-      - name: Publish @jariahh/core
+      - name: Publish @huly-embed/core
         run: npm publish --workspace packages/core --provenance --access public
 
-      - name: Publish @jariahh/angular
+      - name: Publish @huly-embed/angular
         working-directory: packages/angular/dist
         run: npm publish --provenance --access public
 
-      - name: Publish @jariahh/react
+      - name: Publish @huly-embed/react
         run: npm publish --workspace packages/react --provenance --access public

@@ -31,8 +31,8 @@ jobs:
         with:
           node-version: 22
       - run: npm install
-      - run: npm run build -w @jariahh/core
-      - run: npx vitest run --project @jariahh/core --coverage
+      - run: npm run build -w @huly-embed/core
+      - run: npx vitest run --project @huly-embed/core --coverage
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -50,7 +50,7 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run build
-      - run: npx vitest run --project @jariahh/angular --coverage
+      - run: npx vitest run --project @huly-embed/angular --coverage
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -68,7 +68,7 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run build
-      - run: npx vitest run --project @jariahh/react --coverage
+      - run: npx vitest run --project @huly-embed/react --coverage
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -104,3 +104,78 @@ jobs:
             exit 1
           fi
           echo "All checks passed"
+
+  release:
+    name: release
+    needs: quality-gate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Upgrade npm for OIDC publishing
+        run: npm install -g npm@latest
+
+      - run: npm install
+
+      - name: Bump version
+        id: bump
+        run: |
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          if echo "$COMMIT_MSG" | grep -qi '\[major\]'; then
+            BUMP=major
+          elif echo "$COMMIT_MSG" | grep -qi '\[minor\]'; then
+            BUMP=minor
+          else
+            BUMP=patch
+          fi
+
+          CURRENT=$(node -p "require('./packages/core/package.json').version")
+          npm version $BUMP --no-git-tag-version -w packages/core
+          npm version $BUMP --no-git-tag-version -w packages/angular
+          npm version $BUMP --no-git-tag-version -w packages/react
+          NEW_VERSION=$(node -p "require('./packages/core/package.json').version")
+
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "bump=$BUMP" >> "$GITHUB_OUTPUT"
+          echo "Bumped $CURRENT → $NEW_VERSION ($BUMP)"
+
+      - name: Commit version bump
+        run: |
+          git add packages/*/package.json
+          git commit -m "chore: release v${{ steps.bump.outputs.version }}"
+          git tag "v${{ steps.bump.outputs.version }}"
+          git push origin main --tags
+
+      - run: npm run build
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ steps.bump.outputs.version }}" \
+            --title "v${{ steps.bump.outputs.version }}" \
+            --generate-notes
+
+      - name: Publish @huly-embed/core
+        run: npm publish --workspace packages/core --provenance --access public
+
+      - name: Publish @huly-embed/angular
+        working-directory: packages/angular/dist
+        run: npm publish --provenance --access public
+
+      - name: Publish @huly-embed/react
+        run: npm publish --workspace packages/react --provenance --access public

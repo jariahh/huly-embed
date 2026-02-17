@@ -3,8 +3,8 @@ import { render } from '@testing-library/react';
 import { createElement, type ReactNode } from 'react';
 import { HulyEmbedProvider } from '../context/HulyEmbedProvider.js';
 
-vi.mock('@jariahh/core', async () => {
-  const actual = await vi.importActual<typeof import('@jariahh/core')>('@jariahh/core');
+vi.mock('@huly-embed/core', async () => {
+  const actual = await vi.importActual<typeof import('@huly-embed/core')>('@huly-embed/core');
   return {
     ...actual,
     fetchEmbedToken: vi.fn(),
@@ -16,7 +16,7 @@ vi.mock('@jariahh/core', async () => {
   };
 });
 
-import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher } from '@jariahh/core';
+import { fetchEmbedToken, buildEmbedUrl, createTokenRefresher } from '@huly-embed/core';
 import { HulyCreateIssue } from '../components/HulyCreateIssue.js';
 import { HulyIssueList } from '../components/HulyIssueList.js';
 import { HulyIssueDetail } from '../components/HulyIssueDetail.js';
