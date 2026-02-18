@@ -3,7 +3,7 @@ import { HulyCreateIssue } from '@huly-embed/react';
 import type { EmbedHideableField } from '@huly-embed/core';
 
 const ALL_HIDEABLE_FIELDS: EmbedHideableField[] = [
-  'status', 'priority', 'assignee', 'estimation', 'milestone', 'duedate', 'parent',
+  'status', 'priority', 'assignee', 'labels', 'component', 'estimation', 'milestone', 'duedate', 'parent',
 ];
 
 interface Props {
@@ -15,25 +15,39 @@ interface Props {
 export function CreateIssueDemo({ project, externalUser, onEvent }: Props) {
   const [hiddenFields, setHiddenFields] = useState<Set<EmbedHideableField>>(new Set());
 
+  const allHidden = hiddenFields.size === ALL_HIDEABLE_FIELDS.length;
+
+  const toggleAll = () => {
+    setHiddenFields(allHidden ? new Set() : new Set(ALL_HIDEABLE_FIELDS));
+  };
+
   const toggleField = (field: EmbedHideableField) => {
     setHiddenFields((prev) => {
       const next = new Set(prev);
-      if (next.has(field)) {
-        next.delete(field);
-      } else {
-        next.add(field);
-      }
+      if (next.has(field)) next.delete(field);
+      else next.add(field);
       return next;
     });
   };
 
-  const hideFields = hiddenFields.size > 0 ? Array.from(hiddenFields) : undefined;
+  const hideFields = allHidden
+    ? (['*'] as EmbedHideableField[])
+    : hiddenFields.size > 0
+      ? Array.from(hiddenFields)
+      : undefined;
 
   return (
     <div className="demo-section">
-      <h2>Create Issue</h2>
+      <div className="demo-section-header">
+        <h2>Create Issue</h2>
+      </div>
       <div className="demo-controls">
-        <span style={{ color: '#a0a0b0', fontSize: 13 }}>Hide fields:</span>
+        <span className="demo-controls-label">Hide fields</span>
+        <label>
+          <input type="checkbox" checked={allHidden} onChange={toggleAll} />
+          All
+        </label>
+        <div className="separator" />
         {ALL_HIDEABLE_FIELDS.map((field) => (
           <label key={field}>
             <input
@@ -55,7 +69,7 @@ export function CreateIssueDemo({ project, externalUser, onEvent }: Props) {
           onIssueCancelled={() => onEvent('issue-cancelled')}
           onError={(e) => onEvent(`error: ${e.reason}`)}
           loadingContent={<div className="loading-text">Loading create issue form...</div>}
-          errorContent={<div className="error-text">Failed to load. Check that the backend is running.</div>}
+          errorContent={<div className="error-text">Failed to load. Check backend is running.</div>}
         />
       </div>
     </div>

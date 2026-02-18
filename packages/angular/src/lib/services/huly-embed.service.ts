@@ -28,7 +28,7 @@ export class HulyEmbedService {
   buildUrl(
     component: HulyEmbedComponent,
     token: string,
-    options?: { project?: string; issue?: string; externalUser?: string; hideFields?: EmbedHideableField[] }
+    options?: { project?: string; issue?: string; externalUser?: string; hideFields?: EmbedHideableField[]; extraParams?: Record<string, string | boolean | undefined> }
   ): string {
     return buildEmbedUrl({
       hulyUrl: this.config.hulyUrl,
@@ -39,6 +39,7 @@ export class HulyEmbedService {
       externalUser: options?.externalUser,
       parentOrigin: getParentOrigin(),
       hideFields: options?.hideFields,
+      extraParams: options?.extraParams,
     });
   }
 

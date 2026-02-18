@@ -5,10 +5,13 @@ import { IssueListDemoComponent } from './components/issue-list-demo.component';
 import { IssueDetailDemoComponent } from './components/issue-detail-demo.component';
 import { KanbanDemoComponent } from './components/kanban-demo.component';
 import { CommentsDemoComponent } from './components/comments-demo.component';
+import { DocumentsDemoComponent } from './components/documents-demo.component';
+import { DriveDemoComponent } from './components/drive-demo.component';
+import { MoreDemoComponent } from './components/more-demo.component';
 import { CustomEmbedDemoComponent } from './components/custom-embed-demo.component';
 import { EventLogComponent } from './components/event-log.component';
 
-type Tab = 'create-issue' | 'issues' | 'detail' | 'kanban' | 'comments' | 'custom';
+type Tab = 'create-issue' | 'issues' | 'detail' | 'kanban' | 'comments' | 'docs' | 'drive' | 'more' | 'custom';
 
 interface LogEntry {
   time: string;
@@ -25,6 +28,9 @@ interface LogEntry {
     IssueDetailDemoComponent,
     KanbanDemoComponent,
     CommentsDemoComponent,
+    DocumentsDemoComponent,
+    DriveDemoComponent,
+    MoreDemoComponent,
     CustomEmbedDemoComponent,
     EventLogComponent,
   ],
@@ -45,7 +51,10 @@ interface LogEntry {
       </header>
 
       <nav class="tabs">
-        @for (tab of tabs; track tab.id) {
+        @for (tab of tabs; track tab.id; let i = $index) {
+          @if (i === 5) {
+            <div class="tab-separator"></div>
+          }
           <button
             class="tab"
             [class.active]="activeTab() === tab.id"
@@ -121,6 +130,25 @@ interface LogEntry {
                   (event)="addLog($event)"
                 />
               }
+              @case ('docs') {
+                <app-documents-demo
+                  [externalUser]="externalUser() || undefined"
+                  (event)="addLog($event)"
+                />
+              }
+              @case ('drive') {
+                <app-drive-demo
+                  [externalUser]="externalUser() || undefined"
+                  (event)="addLog($event)"
+                />
+              }
+              @case ('more') {
+                <app-more-demo
+                  [project]="project() || undefined"
+                  [externalUser]="externalUser() || undefined"
+                  (event)="addLog($event)"
+                />
+              }
               @case ('custom') {
                 <app-custom-embed-demo
                   [project]="project() || undefined"
@@ -144,6 +172,9 @@ export class AppComponent {
     { id: 'detail' as Tab, label: 'Detail' },
     { id: 'kanban' as Tab, label: 'Kanban' },
     { id: 'comments' as Tab, label: 'Comments' },
+    { id: 'docs' as Tab, label: 'Docs' },
+    { id: 'drive' as Tab, label: 'Drive' },
+    { id: 'more' as Tab, label: 'More' },
     { id: 'custom' as Tab, label: 'Custom' },
   ];
 

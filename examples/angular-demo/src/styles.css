@@ -545,11 +545,20 @@ app-issue-list-demo,
 app-issue-detail-demo,
 app-kanban-demo,
 app-comments-demo,
+app-documents-demo,
+app-drive-demo,
+app-more-demo,
 app-custom-embed-demo {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-height: 0;
+}
+
+.tab-separator {
+  width: 1px;
+  background: var(--border-default);
+  margin: 8px 4px;
 }
 
 /* ── Debug Panel (Custom tab) ─────────────────────── */

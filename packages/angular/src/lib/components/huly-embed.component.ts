@@ -23,6 +23,9 @@ import type {
   HulyIssueCancelledEvent,
   HulyIssueSelectedEvent,
   HulyIssueClosedEvent,
+  HulyDocumentCreatedEvent,
+  HulyDocumentSelectedEvent,
+  HulyFileSelectedEvent,
   HulyResizeEvent,
   HulyEmbedError,
   EmbedTokenResponse,
@@ -77,6 +80,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
   @Input() issueId?: string;
   @Input() externalUser?: string;
   @Input() hideFields?: EmbedHideableField[];
+  @Input() extraParams?: Record<string, string | boolean | undefined>;
   @Input() minHeight = 400;
 
   @Output() readonly ready = new EventEmitter<void>();
@@ -84,6 +88,9 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
   @Output() readonly issueCancelled = new EventEmitter<HulyIssueCancelledEvent>();
   @Output() readonly issueSelected = new EventEmitter<HulyIssueSelectedEvent>();
   @Output() readonly issueClosed = new EventEmitter<HulyIssueClosedEvent>();
+  @Output() readonly documentCreated = new EventEmitter<HulyDocumentCreatedEvent>();
+  @Output() readonly documentSelected = new EventEmitter<HulyDocumentSelectedEvent>();
+  @Output() readonly fileSelected = new EventEmitter<HulyFileSelectedEvent>();
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
   @Output() readonly embedError = new EventEmitter<HulyEmbedError>();
 
@@ -126,6 +133,15 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
         case EmbedMessageTypes.IssueClosed:
           this.issueClosed.emit(message);
           break;
+        case EmbedMessageTypes.DocumentCreated:
+          this.documentCreated.emit(message);
+          break;
+        case EmbedMessageTypes.DocumentSelected:
+          this.documentSelected.emit(message);
+          break;
+        case EmbedMessageTypes.FileSelected:
+          this.fileSelected.emit(message);
+          break;
         case EmbedMessageTypes.Resize:
           this.iframeHeight.set(message.height);
           this.resized.emit(message);
@@ -144,7 +160,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.initialized) return;
-    const urlInputs = ['project', 'issueId', 'externalUser', 'hideFields'] as const;
+    const urlInputs = ['project', 'issueId', 'externalUser', 'hideFields', 'extraParams'] as const;
     const hasUrlChange = urlInputs.some((key) => changes[key]);
     if (hasUrlChange) {
       this.loadEmbed();
@@ -168,6 +184,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
         issue: this.issueId,
         externalUser: this.externalUser,
         hideFields: this.hideFields,
+        extraParams: this.extraParams,
       });
 
       this.embedUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
@@ -182,6 +199,7 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
             issue: this.issueId,
             externalUser: this.externalUser,
             hideFields: this.hideFields,
+            extraParams: this.extraParams,
           });
           this.loading.set(true);
           this.embedUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(newUrl));

@@ -7,6 +7,9 @@ import type {
   HulyIssueCancelledEvent,
   HulyIssueSelectedEvent,
   HulyIssueClosedEvent,
+  HulyDocumentCreatedEvent,
+  HulyDocumentSelectedEvent,
+  HulyFileSelectedEvent,
   HulyResizeEvent,
   HulyEmbedError,
 } from '@huly-embed/core';
@@ -20,11 +23,15 @@ export interface HulyEmbedProps {
   issue?: string;
   externalUser?: string;
   hideFields?: EmbedHideableField[];
+  extraParams?: Record<string, string | boolean | undefined>;
   onReady?: () => void;
   onIssueCreated?: (event: HulyIssueCreatedEvent) => void;
   onIssueCancelled?: (event: HulyIssueCancelledEvent) => void;
   onIssueSelected?: (event: HulyIssueSelectedEvent) => void;
   onIssueClosed?: (event: HulyIssueClosedEvent) => void;
+  onDocumentCreated?: (event: HulyDocumentCreatedEvent) => void;
+  onDocumentSelected?: (event: HulyDocumentSelectedEvent) => void;
+  onFileSelected?: (event: HulyFileSelectedEvent) => void;
   onResize?: (event: HulyResizeEvent) => void;
   onError?: (event: HulyEmbedError) => void;
   loadingContent?: ReactNode;
@@ -37,11 +44,15 @@ export function HulyEmbed({
   issue,
   externalUser,
   hideFields,
+  extraParams,
   onReady,
   onIssueCreated,
   onIssueCancelled,
   onIssueSelected,
   onIssueClosed,
+  onDocumentCreated,
+  onDocumentSelected,
+  onFileSelected,
   onResize,
   onError,
   loadingContent,
@@ -53,9 +64,10 @@ export function HulyEmbed({
     issue,
     externalUser,
     hideFields,
+    extraParams,
   });
 
-  const [iframeHeight, setIframeHeight] = useState(400);
+  const [iframeHeight, setIframeHeight] = useState<number | null>(null);
 
   const handleMessage = useCallback(
     (message: HulyEmbedMessage) => {
@@ -76,6 +88,15 @@ export function HulyEmbed({
         case EmbedMessageTypes.IssueClosed:
           onIssueClosed?.(message as HulyIssueClosedEvent);
           break;
+        case EmbedMessageTypes.DocumentCreated:
+          onDocumentCreated?.(message as HulyDocumentCreatedEvent);
+          break;
+        case EmbedMessageTypes.DocumentSelected:
+          onDocumentSelected?.(message as HulyDocumentSelectedEvent);
+          break;
+        case EmbedMessageTypes.FileSelected:
+          onFileSelected?.(message as HulyFileSelectedEvent);
+          break;
         case EmbedMessageTypes.Resize:
           setIframeHeight((message as HulyResizeEvent).height);
           onResize?.(message as HulyResizeEvent);
@@ -85,7 +106,7 @@ export function HulyEmbed({
           break;
       }
     },
-    [onReady, onIssueCreated, onIssueCancelled, onIssueSelected, onIssueClosed, onResize, onError]
+    [onReady, onIssueCreated, onIssueCancelled, onIssueSelected, onIssueClosed, onDocumentCreated, onDocumentSelected, onFileSelected, onResize, onError]
   );
 
   useHulyMessages(handleMessage);
@@ -104,7 +125,7 @@ export function HulyEmbed({
   }
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
       {loading && (
         <div className="huly-embed-loading">
           {loadingContent ?? <div className="huly-embed-spinner" />}
@@ -115,13 +136,15 @@ export function HulyEmbed({
           src={embedUrl}
           style={{
             width: '100%',
-            height: `${iframeHeight}px`,
+            height: iframeHeight ? `${iframeHeight}px` : '100%',
+            minHeight: 400,
             border: 'none',
             display: loading ? 'none' : 'block',
+            flex: 1,
           }}
           allow="clipboard-write"
         />
       )}
-    </>
+    </div>
   );
 }

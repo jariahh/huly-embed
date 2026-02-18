@@ -5,6 +5,9 @@ export const EmbedMessageTypes = {
   IssueCreated: 'huly-embed-issue-created',
   IssueSelected: 'huly-embed-issue-selected',
   IssueClosed: 'huly-embed-issue-closed',
+  DocumentCreated: 'huly-embed-document-created',
+  DocumentSelected: 'huly-embed-document-selected',
+  FileSelected: 'huly-embed-file-selected',
   Resize: 'huly-embed-resize',
   Error: 'huly-embed-error',
 } as const;
@@ -61,6 +64,24 @@ export function parseHulyMessage(event: MessageEvent): HulyEmbedMessage | null {
         type: data.type,
         ...(typeof data.identifier === 'string' ? { identifier: data.identifier } : {}),
       };
+
+    case EmbedMessageTypes.DocumentCreated:
+      if (typeof data.documentId === 'string') {
+        return { type: data.type, documentId: data.documentId };
+      }
+      return null;
+
+    case EmbedMessageTypes.DocumentSelected:
+      if (typeof data.documentId === 'string') {
+        return { type: data.type, documentId: data.documentId };
+      }
+      return null;
+
+    case EmbedMessageTypes.FileSelected:
+      if (typeof data.fileId === 'string') {
+        return { type: data.type, fileId: data.fileId };
+      }
+      return null;
 
     case EmbedMessageTypes.Resize:
       if (typeof data.height === 'number') {

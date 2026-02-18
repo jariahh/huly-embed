@@ -12,17 +12,17 @@ export function IssueDetailDemo({ project, externalUser, onEvent }: Props) {
 
   return (
     <div className="demo-section">
-      <h2>Issue Detail</h2>
+      <div className="demo-section-header">
+        <h2>Issue Detail</h2>
+      </div>
       <div className="demo-controls">
-        <label>
-          Issue ID:
-          <input
-            type="text"
-            value={issueId}
-            onChange={(e) => setIssueId(e.target.value)}
-            placeholder="DEMO-1"
-          />
-        </label>
+        <span className="demo-controls-label">Issue ID</span>
+        <input
+          type="text"
+          value={issueId}
+          onChange={(e) => setIssueId(e.target.value)}
+          placeholder="DEMO-1"
+        />
       </div>
       <div className="embed-container">
         {issueId ? (
@@ -33,10 +33,10 @@ export function IssueDetailDemo({ project, externalUser, onEvent }: Props) {
             onReady={() => onEvent(`issue-detail: ready (${issueId})`)}
             onError={(e) => onEvent(`error: ${e.reason}`)}
             loadingContent={<div className="loading-text">Loading issue detail...</div>}
-            errorContent={<div className="error-text">Failed to load. Check that the backend is running.</div>}
+            errorContent={<div className="error-text">Failed to load. Check backend is running.</div>}
           />
         ) : (
-          <div className="loading-text">Enter an issue ID above to load the detail view.</div>
+          <div className="empty-state">Enter an issue ID above to load the detail view.</div>
         )}
       </div>
     </div>

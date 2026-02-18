@@ -9,6 +9,7 @@ export interface UseHulyEmbedOptions {
   issue?: string;
   externalUser?: string;
   hideFields?: EmbedHideableField[];
+  extraParams?: Record<string, string | boolean | undefined>;
 }
 
 export interface UseHulyEmbedResult {
@@ -26,6 +27,8 @@ export function useHulyEmbed(options: UseHulyEmbedOptions): UseHulyEmbedResult {
   const [retryCount, setRetryCount] = useState(0);
   const destroyRefresherRef = useRef<(() => void) | null>(null);
 
+  const extraParamsKey = JSON.stringify(options.extraParams);
+
   const buildUrl = useCallback(
     (token: string) =>
       buildEmbedUrl({
@@ -37,8 +40,9 @@ export function useHulyEmbed(options: UseHulyEmbedOptions): UseHulyEmbedResult {
         externalUser: options.externalUser,
         parentOrigin: getParentOrigin(),
         hideFields: options.hideFields,
+        extraParams: options.extraParams,
       }),
-    [config.hulyUrl, config.defaultProject, options.component, options.project, options.issue, options.externalUser, options.hideFields]
+    [config.hulyUrl, config.defaultProject, options.component, options.project, options.issue, options.externalUser, options.hideFields, extraParamsKey]
   );
 
   useEffect(() => {
@@ -53,6 +57,7 @@ export function useHulyEmbed(options: UseHulyEmbedOptions): UseHulyEmbedResult {
         if (cancelled) return;
 
         setEmbedUrl(buildUrl(tokenResponse.token));
+        setLoading(false);
 
         destroyRefresherRef.current?.();
         destroyRefresherRef.current = createTokenRefresher(

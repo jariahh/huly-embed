@@ -9,6 +9,7 @@ export interface BuildEmbedUrlParams {
   externalUser?: string;
   parentOrigin?: string;
   hideFields?: EmbedHideableField[];
+  extraParams?: Record<string, string | boolean | undefined>;
 }
 
 export function buildEmbedUrl(params: BuildEmbedUrlParams): string {
@@ -31,6 +32,13 @@ export function buildEmbedUrl(params: BuildEmbedUrlParams): string {
   }
   if (params.hideFields && params.hideFields.length > 0) {
     url.searchParams.set('hideFields', params.hideFields.join(','));
+  }
+  if (params.extraParams) {
+    for (const [key, value] of Object.entries(params.extraParams)) {
+      if (value !== undefined) {
+        url.searchParams.set(key, String(value));
+      }
+    }
   }
 
   return url.toString();

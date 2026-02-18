@@ -10,15 +10,11 @@ export function EventLog({ logs, onClear }: EventLogProps) {
     <div className="event-log">
       <div className="event-log-header">
         <h3>Event Log</h3>
-        <button className="clear-btn" onClick={onClear}>
-          Clear
-        </button>
+        <button className="clear-btn" onClick={onClear}>Clear</button>
       </div>
       <div className="log-entries">
         {logs.length === 0 && (
-          <div style={{ color: '#555', fontStyle: 'italic' }}>
-            No events yet...
-          </div>
+          <div className="log-empty">No events yet</div>
         )}
         {logs.map((entry, i) => (
           <div key={i} className="log-entry">

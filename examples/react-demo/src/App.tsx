@@ -4,10 +4,13 @@ import { IssueListDemo } from './components/IssueListDemo';
 import { IssueDetailDemo } from './components/IssueDetailDemo';
 import { KanbanDemo } from './components/KanbanDemo';
 import { CommentsDemo } from './components/CommentsDemo';
+import { DocumentsDemo } from './components/DocumentsDemo';
+import { DriveDemo } from './components/DriveDemo';
+import { MoreDemo } from './components/MoreDemo';
 import { CustomEmbedDemo } from './components/CustomEmbedDemo';
 import { EventLog } from './components/EventLog';
 
-type Tab = 'create-issue' | 'issues' | 'detail' | 'kanban' | 'comments' | 'custom';
+type Tab = 'create-issue' | 'issues' | 'detail' | 'kanban' | 'comments' | 'docs' | 'drive' | 'more' | 'custom';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'create-issue', label: 'Create Issue' },
@@ -15,6 +18,9 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'detail', label: 'Detail' },
   { id: 'kanban', label: 'Kanban' },
   { id: 'comments', label: 'Comments' },
+  { id: 'docs', label: 'Docs' },
+  { id: 'drive', label: 'Drive' },
+  { id: 'more', label: 'More' },
   { id: 'custom', label: 'Custom' },
 ];
 
@@ -47,24 +53,33 @@ export function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Huly Embed Demo (React)</h1>
+        <div className="header-brand">
+          <div className="header-logo">H</div>
+          <h1>Huly Embed <span>React Demo</span></h1>
+        </div>
         <button
           className="settings-toggle"
           onClick={() => setSettingsOpen(!settingsOpen)}
         >
-          Settings {settingsOpen ? '▲' : '▼'}
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <circle cx="8" cy="8" r="2.5"/>
+            <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/>
+          </svg>
+          Settings
         </button>
       </header>
 
       <nav className="tabs">
-        {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            className={`tab ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
+        {TABS.map((tab, i) => (
+          <span key={tab.id} style={{ display: 'contents' }}>
+            {i === 5 && <div className="tab-separator" />}
+            <button
+              className={`tab ${activeTab === tab.id ? 'active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          </span>
         ))}
       </nav>
 
@@ -72,25 +87,27 @@ export function App() {
         <div className="content-area">
           {settingsOpen && (
             <div className="settings-panel">
-              <h3>Settings</h3>
-              <label>
-                Project:
-                <input
-                  type="text"
-                  value={project}
-                  onChange={(e) => setProject(e.target.value)}
-                  placeholder="Override defaultProject"
-                />
-              </label>
-              <label>
-                External User:
-                <input
-                  type="text"
-                  value={externalUser}
-                  onChange={(e) => setExternalUser(e.target.value)}
-                  placeholder="e.g. user@example.com"
-                />
-              </label>
+              <h3>Configuration</h3>
+              <div className="settings-grid">
+                <label>
+                  Project
+                  <input
+                    type="text"
+                    value={project}
+                    onChange={(e) => setProject(e.target.value)}
+                    placeholder="Override defaultProject"
+                  />
+                </label>
+                <label>
+                  External User
+                  <input
+                    type="text"
+                    value={externalUser}
+                    onChange={(e) => setExternalUser(e.target.value)}
+                    placeholder="user@example.com"
+                  />
+                </label>
+              </div>
             </div>
           )}
 
@@ -100,6 +117,9 @@ export function App() {
             {activeTab === 'detail' && <IssueDetailDemo {...sharedProps} />}
             {activeTab === 'kanban' && <KanbanDemo {...sharedProps} />}
             {activeTab === 'comments' && <CommentsDemo {...sharedProps} />}
+            {activeTab === 'docs' && <DocumentsDemo externalUser={sharedProps.externalUser} onEvent={addLog} />}
+            {activeTab === 'drive' && <DriveDemo externalUser={sharedProps.externalUser} onEvent={addLog} />}
+            {activeTab === 'more' && <MoreDemo {...sharedProps} />}
             {activeTab === 'custom' && <CustomEmbedDemo {...sharedProps} />}
           </div>
         </div>

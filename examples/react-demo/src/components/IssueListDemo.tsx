@@ -9,7 +9,9 @@ interface Props {
 export function IssueListDemo({ project, externalUser, onEvent }: Props) {
   return (
     <div className="demo-section">
-      <h2>Issue List</h2>
+      <div className="demo-section-header">
+        <h2>Issue List</h2>
+      </div>
       <div className="embed-container">
         <HulyIssueList
           project={project}
@@ -18,7 +20,7 @@ export function IssueListDemo({ project, externalUser, onEvent }: Props) {
           onIssueSelected={(e) => onEvent(`issue-selected: ${e.identifier}`)}
           onError={(e) => onEvent(`error: ${e.reason}`)}
           loadingContent={<div className="loading-text">Loading issue list...</div>}
-          errorContent={<div className="error-text">Failed to load. Check that the backend is running.</div>}
+          errorContent={<div className="error-text">Failed to load. Check backend is running.</div>}
         />
       </div>
     </div>

@@ -7,6 +7,10 @@ import type { HulyEmbedComponent as EmbedComponentType } from '@huly-embed/core'
 
 const COMPONENTS: EmbedComponentType[] = [
   'create-issue', 'issue-list', 'issue-detail', 'kanban', 'comments',
+  'my-issues', 'milestones', 'milestone-detail', 'components', 'issue-templates',
+  'issue-preview', 'time-reports', 'create-project', 'document', 'document-list',
+  'create-document', 'file-browser', 'file-detail', 'thread', 'activity',
+  'calendar', 'board', 'department-staff', 'todos', 'my-leads', 'applications',
 ];
 
 @Component({

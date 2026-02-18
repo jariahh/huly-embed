@@ -6,7 +6,13 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const port = process.env.PORT || 3000;
 
-const VALID_COMPONENTS = ['create-issue', 'issue-list', 'issue-detail', 'kanban', 'comments'];
+const VALID_COMPONENTS = [
+  'create-issue', 'issue-list', 'issue-detail', 'kanban', 'comments',
+  'my-issues', 'milestones', 'milestone-detail', 'components', 'issue-templates',
+  'issue-preview', 'time-reports', 'create-project', 'document', 'document-list',
+  'create-document', 'file-browser', 'file-detail', 'thread', 'activity',
+  'calendar', 'board', 'department-staff', 'todos', 'my-leads', 'applications',
+];
 
 app.use(cors({
   origin: ['http://localhost:5173', 'http://localhost:4200', 'http://localhost:4201'],

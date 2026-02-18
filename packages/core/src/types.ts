@@ -6,7 +6,33 @@ export interface HulyEmbedConfig {
   tokenRefreshBuffer?: number;
 }
 
-export type HulyEmbedComponent = 'create-issue' | 'issue-list' | 'issue-detail' | 'kanban' | 'comments';
+export type HulyEmbedComponent =
+  | 'create-issue'
+  | 'issue-list'
+  | 'issue-detail'
+  | 'kanban'
+  | 'comments'
+  | 'my-issues'
+  | 'milestones'
+  | 'milestone-detail'
+  | 'components'
+  | 'issue-templates'
+  | 'issue-preview'
+  | 'time-reports'
+  | 'create-project'
+  | 'document'
+  | 'document-list'
+  | 'create-document'
+  | 'file-browser'
+  | 'file-detail'
+  | 'thread'
+  | 'activity'
+  | 'calendar'
+  | 'board'
+  | 'department-staff'
+  | 'todos'
+  | 'my-leads'
+  | 'applications';
 
 export type EmbedHideableField = 'status' | 'priority' | 'assignee' | 'labels' | 'component' | 'estimation' | 'milestone' | 'duedate' | 'parent' | '*';
 
@@ -48,6 +74,21 @@ export interface HulyResizeEvent {
   height: number;
 }
 
+export interface HulyDocumentCreatedEvent {
+  type: 'huly-embed-document-created';
+  documentId: string;
+}
+
+export interface HulyDocumentSelectedEvent {
+  type: 'huly-embed-document-selected';
+  documentId: string;
+}
+
+export interface HulyFileSelectedEvent {
+  type: 'huly-embed-file-selected';
+  fileId: string;
+}
+
 export interface HulyEmbedError {
   type: 'huly-embed-error';
   reason: string;
@@ -59,6 +100,9 @@ export type HulyEmbedMessage =
   | HulyIssueCancelledEvent
   | HulyIssueSelectedEvent
   | HulyIssueClosedEvent
+  | HulyDocumentCreatedEvent
+  | HulyDocumentSelectedEvent
+  | HulyFileSelectedEvent
   | HulyResizeEvent
   | HulyEmbedError;
 

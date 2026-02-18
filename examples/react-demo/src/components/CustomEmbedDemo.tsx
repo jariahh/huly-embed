@@ -4,6 +4,10 @@ import type { HulyEmbedComponent, HulyEmbedMessage } from '@huly-embed/core';
 
 const COMPONENTS: HulyEmbedComponent[] = [
   'create-issue', 'issue-list', 'issue-detail', 'kanban', 'comments',
+  'my-issues', 'milestones', 'milestone-detail', 'components', 'issue-templates',
+  'issue-preview', 'time-reports', 'create-project', 'document', 'document-list',
+  'create-document', 'file-browser', 'file-detail', 'thread', 'activity',
+  'calendar', 'board', 'department-staff', 'todos', 'my-leads', 'applications',
 ];
 
 interface Props {
@@ -32,23 +36,21 @@ export function CustomEmbedDemo({ project, externalUser, onEvent }: Props) {
 
   return (
     <div className="demo-section">
-      <h2>Custom Embed (Raw Hooks)</h2>
+      <div className="demo-section-header">
+        <h2>Custom Embed (Raw Hooks)</h2>
+      </div>
       <div className="demo-controls">
-        <label>
-          Component:
-          <select
-            value={component}
-            onChange={(e) => setComponent(e.target.value as HulyEmbedComponent)}
-          >
-            {COMPONENTS.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </label>
+        <span className="demo-controls-label">Component</span>
+        <select
+          value={component}
+          onChange={(e) => setComponent(e.target.value as HulyEmbedComponent)}
+        >
+          {COMPONENTS.map((c) => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
         {error && (
-          <button className="retry-btn" onClick={retry}>
-            Retry
-          </button>
+          <button className="retry-btn" onClick={retry}>Retry</button>
         )}
       </div>
 
