@@ -102,6 +102,31 @@ import { HulyCreateIssue, HulyIssueList, HulyIssueDetail } from '@huly-embed/rea
 
 All components accept an optional `project` prop to override the default.
 
+### Hide Fields (Create Issue)
+
+The Create Issue component supports hiding specific form fields:
+
+```html
+<!-- Angular -->
+<huly-create-issue [hideFields]="['priority', 'assignee']" />
+
+<!-- Hide all optional fields -->
+<huly-create-issue [hideFields]="['*']" />
+```
+
+```tsx
+// React
+<HulyCreateIssue hideFields={['priority', 'assignee']} />
+```
+
+Available fields: `status`, `priority`, `assignee`, `labels`, `component`, `estimation`, `milestone`, `duedate`, `parent`, `*` (all).
+
+### Auto-Height
+
+By default, embed iframes fill the height of their parent container via flexbox. If your layout provides a defined height (e.g., via `height: 100vh` or flex), the embeds will expand to fill it. A `minHeight` of 400px is applied as a safety floor.
+
+If the Huly server sends a `huly-embed-resize` postMessage with a specific pixel height, the iframe will use that instead.
+
 ## Configuration
 
 | Property | Required | Default | Description |
@@ -119,6 +144,38 @@ See [docs/updated-huly.md](https://github.com/jariahh/huly-embed/blob/main/docs/
 - Embed token flow
 - Component mapping across all three layers
 - Implementation phases
+
+## Running the Demos
+
+The repo includes Angular and React demo apps plus a local API server that signs embed tokens.
+
+**1. Set up the API server credentials**
+
+```bash
+cp examples/api-server/.env.example examples/api-server/.env
+# Edit .env with your Huly server secret, workspace UUID, and account UUID
+```
+
+**2. Install and build**
+
+```bash
+npm install
+npm run build
+```
+
+**3. Start everything**
+
+```bash
+# All three (API + Angular + React):
+npm run demo
+
+# Or individually:
+npm run demo:api       # http://localhost:3000
+npm run demo:angular   # http://localhost:4201
+npm run demo:react     # http://localhost:5173
+```
+
+The demo apps connect to the API server for token generation and load real Huly embeds. Update `examples/*/src/**/config.ts` to point at your Huly instance.
 
 ## Requirements
 

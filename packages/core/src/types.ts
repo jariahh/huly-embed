@@ -8,7 +8,7 @@ export interface HulyEmbedConfig {
 
 export type HulyEmbedComponent = 'create-issue' | 'issue-list' | 'issue-detail' | 'kanban' | 'comments';
 
-export type EmbedHideableField = 'status' | 'priority' | 'assignee' | 'estimation' | 'milestone' | 'duedate' | 'parent';
+export type EmbedHideableField = 'status' | 'priority' | 'assignee' | 'labels' | 'component' | 'estimation' | 'milestone' | 'duedate' | 'parent' | '*';
 
 export interface EmbedTokenResponse {
   token: string;

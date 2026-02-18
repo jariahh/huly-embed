@@ -1,6 +1,19 @@
 {
   "name": "@huly-embed/angular",
   "version": "0.1.4",
+  "exports": {
+    "./package.json": {
+      "default": "./dist/package.json"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "esm2022": "./dist/esm2022/huly-embed-angular.mjs",
+      "esm": "./dist/esm2022/huly-embed-angular.mjs",
+      "default": "./dist/fesm2022/huly-embed-angular.mjs"
+    }
+  },
+  "module": "dist/fesm2022/huly-embed-angular.mjs",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "ng-packagr -p ng-package.json",
     "clean": "rimraf dist",

@@ -4,15 +4,23 @@
   "workspaces": [
     "packages/core",
     "packages/angular",
-    "packages/react"
+    "packages/react",
+    "examples/react-demo",
+    "examples/angular-demo",
+    "examples/api-server"
   ],
   "scripts": {
     "build": "npm run build -w @huly-embed/core && npm run build -w @huly-embed/angular && npm run build -w @huly-embed/react",
     "clean": "npm run clean -w @huly-embed/core && npm run clean -w @huly-embed/angular && npm run clean -w @huly-embed/react",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "demo:api": "npm run dev -w api-server",
+    "demo:react": "npm run dev -w react-demo",
+    "demo:angular": "npm run dev -w angular-demo",
+    "demo": "concurrently -n api,react,angular -c blue,green,yellow \"npm:demo:api\" \"npm:demo:react\" \"npm:demo:angular\""
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "vitest": "^3.0.0",
     "@vitest/coverage-v8": "^3.0.0"
   },

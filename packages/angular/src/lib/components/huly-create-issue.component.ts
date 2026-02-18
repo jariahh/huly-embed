@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
 import type { HulyIssueCreatedEvent, HulyIssueCancelledEvent, EmbedHideableField } from '@huly-embed/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
@@ -7,6 +7,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
   standalone: true,
   imports: [HulyEmbedComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`:host { display: flex; flex-direction: column; flex: 1; min-height: 0; }`],
   template: `
     <huly-embed
       component="create-issue"
@@ -21,11 +22,17 @@ import { HulyEmbedComponent } from './huly-embed.component';
     </huly-embed>
   `,
 })
-export class HulyCreateIssueComponent {
+export class HulyCreateIssueComponent implements OnChanges {
   @Input() project?: string;
   @Input() externalUser?: string;
   @Input() hideFields?: EmbedHideableField[];
 
   @Output() readonly issueCreated = new EventEmitter<HulyIssueCreatedEvent>();
   @Output() readonly issueCancelled = new EventEmitter<HulyIssueCancelledEvent>();
+
+  constructor(private readonly cdr: ChangeDetectorRef) {}
+
+  ngOnChanges(): void {
+    this.cdr.markForCheck();
+  }
 }

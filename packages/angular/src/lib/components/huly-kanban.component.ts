@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
 import type { HulyIssueSelectedEvent } from '@huly-embed/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
@@ -7,6 +7,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
   standalone: true,
   imports: [HulyEmbedComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`:host { display: flex; flex-direction: column; flex: 1; min-height: 0; }`],
   template: `
     <huly-embed
       component="kanban"
@@ -19,9 +20,15 @@ import { HulyEmbedComponent } from './huly-embed.component';
     </huly-embed>
   `,
 })
-export class HulyKanbanComponent {
+export class HulyKanbanComponent implements OnChanges {
   @Input() project?: string;
   @Input() externalUser?: string;
 
   @Output() readonly issueSelected = new EventEmitter<HulyIssueSelectedEvent>();
+
+  constructor(private readonly cdr: ChangeDetectorRef) {}
+
+  ngOnChanges(): void {
+    this.cdr.markForCheck();
+  }
 }

@@ -5,7 +5,10 @@ import {
   EventEmitter,
   OnInit,
   OnDestroy,
+  OnChanges,
+  SimpleChanges,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   signal,
   ElementRef,
   ViewChild,
@@ -33,6 +36,17 @@ import { HulyMessageService } from '../services/huly-message.service';
   standalone: true,
   imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+    iframe {
+      flex: 1;
+    }
+  `],
   template: `
     @if (loading()) {
       <div class="huly-embed-loading">
@@ -48,7 +62,8 @@ import { HulyMessageService } from '../services/huly-message.service';
       <iframe
         #embedIframe
         [src]="embedUrl()"
-        [style.height.px]="iframeHeight()"
+        [style.height]="iframeHeight() ? iframeHeight() + 'px' : '100%'"
+        [style.min-height.px]="minHeight"
         [style.display]="loading() ? 'none' : 'block'"
         style="width: 100%; border: none;"
         allow="clipboard-write"
@@ -56,12 +71,13 @@ import { HulyMessageService } from '../services/huly-message.service';
     }
   `,
 })
-export class HulyEmbedComponent implements OnInit, OnDestroy {
+export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
   @Input({ required: true }) component!: EmbedComponentType;
   @Input() project?: string;
   @Input() issueId?: string;
   @Input() externalUser?: string;
   @Input() hideFields?: EmbedHideableField[];
+  @Input() minHeight = 400;
 
   @Output() readonly ready = new EventEmitter<void>();
   @Output() readonly issueCreated = new EventEmitter<HulyIssueCreatedEvent>();
@@ -76,15 +92,18 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
   readonly embedUrl = signal<SafeResourceUrl | null>(null);
   readonly loading = signal(true);
   readonly errorMessage = signal<string | null>(null);
-  readonly iframeHeight = signal(400);
+  readonly iframeHeight = signal<number | null>(null);
 
   private subscription?: Subscription;
   private destroyRefresher?: () => void;
 
+  private initialized = false;
+
   constructor(
     private readonly embedService: HulyEmbedService,
     private readonly messageService: HulyMessageService,
-    private readonly sanitizer: DomSanitizer
+    private readonly sanitizer: DomSanitizer,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -120,6 +139,17 @@ export class HulyEmbedComponent implements OnInit, OnDestroy {
     });
 
     this.loadEmbed();
+    this.initialized = true;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.initialized) return;
+    const urlInputs = ['project', 'issueId', 'externalUser', 'hideFields'] as const;
+    const hasUrlChange = urlInputs.some((key) => changes[key]);
+    if (hasUrlChange) {
+      this.loadEmbed();
+      this.cdr.markForCheck();
+    }
   }
 
   ngOnDestroy(): void {
