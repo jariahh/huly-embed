@@ -8,11 +8,14 @@ function makeEvent(data: unknown, origin = 'https://huly.test'): MessageEvent {
 const ALLOWED = ['https://huly.test'];
 
 describe('EmbedMessageTypes', () => {
-  it('has all 6 expected message types', () => {
+  it('has all 9 expected message types', () => {
     expect(EmbedMessageTypes.Ready).toBe('huly-embed-ready');
     expect(EmbedMessageTypes.IssueCreated).toBe('huly-embed-issue-created');
     expect(EmbedMessageTypes.IssueSelected).toBe('huly-embed-issue-selected');
     expect(EmbedMessageTypes.IssueClosed).toBe('huly-embed-issue-closed');
+    expect(EmbedMessageTypes.DocumentCreated).toBe('huly-embed-document-created');
+    expect(EmbedMessageTypes.DocumentSelected).toBe('huly-embed-document-selected');
+    expect(EmbedMessageTypes.FileSelected).toBe('huly-embed-file-selected');
     expect(EmbedMessageTypes.Resize).toBe('huly-embed-resize');
     expect(EmbedMessageTypes.Error).toBe('huly-embed-error');
   });
@@ -130,5 +133,38 @@ describe('parseHulyMessage', () => {
 
   it('returns null for Error with missing reason', () => {
     expect(parseHulyMessage(makeEvent({ type: 'huly-embed-error' }))).toBeNull();
+  });
+
+  it('parses DocumentCreated with documentId', () => {
+    const result = parseHulyMessage(
+      makeEvent({ type: 'huly-embed-document-created', documentId: 'doc-1' })
+    );
+    expect(result).toEqual({ type: 'huly-embed-document-created', documentId: 'doc-1' });
+  });
+
+  it('returns null for DocumentCreated with missing documentId', () => {
+    expect(parseHulyMessage(makeEvent({ type: 'huly-embed-document-created' }))).toBeNull();
+  });
+
+  it('parses DocumentSelected with documentId', () => {
+    const result = parseHulyMessage(
+      makeEvent({ type: 'huly-embed-document-selected', documentId: 'doc-2' })
+    );
+    expect(result).toEqual({ type: 'huly-embed-document-selected', documentId: 'doc-2' });
+  });
+
+  it('returns null for DocumentSelected with missing documentId', () => {
+    expect(parseHulyMessage(makeEvent({ type: 'huly-embed-document-selected' }))).toBeNull();
+  });
+
+  it('parses FileSelected with fileId', () => {
+    const result = parseHulyMessage(
+      makeEvent({ type: 'huly-embed-file-selected', fileId: 'file-1' })
+    );
+    expect(result).toEqual({ type: 'huly-embed-file-selected', fileId: 'file-1' });
+  });
+
+  it('returns null for FileSelected with missing fileId', () => {
+    expect(parseHulyMessage(makeEvent({ type: 'huly-embed-file-selected' }))).toBeNull();
   });
 });

@@ -118,6 +118,38 @@ describe('buildEmbedUrl', () => {
     expect(url).not.toContain('//embed');
   });
 
+  it('includes extraParams in URL', () => {
+    const url = new URL(buildEmbedUrl({
+      hulyUrl: 'https://huly.test',
+      component: 'document',
+      token: 'abc',
+      extraParams: { document: 'doc-123', readonly: true },
+    }));
+    expect(url.searchParams.get('document')).toBe('doc-123');
+    expect(url.searchParams.get('readonly')).toBe('true');
+  });
+
+  it('skips undefined extraParams values', () => {
+    const url = new URL(buildEmbedUrl({
+      hulyUrl: 'https://huly.test',
+      component: 'file-browser',
+      token: 'abc',
+      extraParams: { drive: 'drv-1', folder: undefined },
+    }));
+    expect(url.searchParams.get('drive')).toBe('drv-1');
+    expect(url.searchParams.has('folder')).toBe(false);
+  });
+
+  it('stringifies boolean extraParams', () => {
+    const url = new URL(buildEmbedUrl({
+      hulyUrl: 'https://huly.test',
+      component: 'file-detail',
+      token: 'abc',
+      extraParams: { readonly: false },
+    }));
+    expect(url.searchParams.get('readonly')).toBe('false');
+  });
+
   it('encodes special characters in param values', () => {
     const url = buildEmbedUrl({
       hulyUrl: 'https://huly.test',

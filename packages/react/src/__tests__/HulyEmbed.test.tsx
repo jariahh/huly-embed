@@ -209,6 +209,72 @@ describe('HulyEmbed', () => {
     });
   });
 
+  it('calls onDocumentCreated when DocumentCreated message is received', async () => {
+    const onDocumentCreated = vi.fn();
+    renderEmbed({ onDocumentCreated });
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('iframe')).not.toBeNull();
+    });
+
+    const msg = { type: EmbedMessageTypes.DocumentCreated as const, documentId: 'doc-1' };
+    mockIsHulyMessage.mockReturnValueOnce(true);
+    mockParseHulyMessage.mockReturnValueOnce(msg);
+
+    const listener = addSpy.mock.calls.find(c => c[0] === 'message')![1] as EventListener;
+    listener(new MessageEvent('message', { data: msg, origin: 'https://huly.test' }));
+
+    expect(onDocumentCreated).toHaveBeenCalledWith(msg);
+  });
+
+  it('calls onDocumentSelected when DocumentSelected message is received', async () => {
+    const onDocumentSelected = vi.fn();
+    renderEmbed({ onDocumentSelected });
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('iframe')).not.toBeNull();
+    });
+
+    const msg = { type: EmbedMessageTypes.DocumentSelected as const, documentId: 'doc-2' };
+    mockIsHulyMessage.mockReturnValueOnce(true);
+    mockParseHulyMessage.mockReturnValueOnce(msg);
+
+    const listener = addSpy.mock.calls.find(c => c[0] === 'message')![1] as EventListener;
+    listener(new MessageEvent('message', { data: msg, origin: 'https://huly.test' }));
+
+    expect(onDocumentSelected).toHaveBeenCalledWith(msg);
+  });
+
+  it('calls onFileSelected when FileSelected message is received', async () => {
+    const onFileSelected = vi.fn();
+    renderEmbed({ onFileSelected });
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('iframe')).not.toBeNull();
+    });
+
+    const msg = { type: EmbedMessageTypes.FileSelected as const, fileId: 'file-1' };
+    mockIsHulyMessage.mockReturnValueOnce(true);
+    mockParseHulyMessage.mockReturnValueOnce(msg);
+
+    const listener = addSpy.mock.calls.find(c => c[0] === 'message')![1] as EventListener;
+    listener(new MessageEvent('message', { data: msg, origin: 'https://huly.test' }));
+
+    expect(onFileSelected).toHaveBeenCalledWith(msg);
+  });
+
+  it('passes extraParams to buildEmbedUrl', async () => {
+    renderEmbed({ extraParams: { document: 'doc-1', readonly: true } });
+
+    await vi.waitFor(() => {
+      expect(document.querySelector('iframe')).not.toBeNull();
+    });
+
+    expect(mockBuildUrl).toHaveBeenCalledWith(expect.objectContaining({
+      extraParams: { document: 'doc-1', readonly: true },
+    }));
+  });
+
   it('calls onError when Error message is received', async () => {
     const onError = vi.fn();
     renderEmbed({ onError });

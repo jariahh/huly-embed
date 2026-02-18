@@ -11,7 +11,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
     <huly-embed
       component="applications"
       [externalUser]="externalUser"
-      [extraParams]="{ space: space, readonly: isReadonly }"
+      [extraParams]="{ application: applicationId, space: space, readonly: isReadonly }"
     >
       <ng-content select="[loading]" loading></ng-content>
       <ng-content select="[error]" error></ng-content>
@@ -19,6 +19,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
   `,
 })
 export class HulyApplicationsComponent implements OnChanges {
+  @Input() applicationId?: string;
   @Input() space?: string;
   @Input('readonly') isReadonly?: boolean;
   @Input() externalUser?: string;

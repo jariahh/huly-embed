@@ -42,6 +42,8 @@ describe('HulyEmbedComponent', () => {
       project: undefined,
       issue: undefined,
       externalUser: undefined,
+      hideFields: undefined,
+      extraParams: undefined,
     });
   });
 
@@ -155,6 +157,56 @@ describe('HulyEmbedComponent', () => {
     expect(comp.errorMessage()).toBe('auth-expired');
     expect(comp.loading()).toBe(false);
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('emits documentCreated on DocumentCreated message', async () => {
+    comp.ngOnInit();
+    await vi.waitFor(() => expect(comp.embedUrl()).not.toBeNull());
+
+    const spy = vi.fn();
+    comp.documentCreated.subscribe(spy);
+
+    const msg = { type: 'huly-embed-document-created' as const, documentId: 'doc-1' };
+    messages$.next(msg);
+    expect(spy).toHaveBeenCalledWith(msg);
+  });
+
+  it('emits documentSelected on DocumentSelected message', async () => {
+    comp.ngOnInit();
+    await vi.waitFor(() => expect(comp.embedUrl()).not.toBeNull());
+
+    const spy = vi.fn();
+    comp.documentSelected.subscribe(spy);
+
+    const msg = { type: 'huly-embed-document-selected' as const, documentId: 'doc-2' };
+    messages$.next(msg);
+    expect(spy).toHaveBeenCalledWith(msg);
+  });
+
+  it('emits fileSelected on FileSelected message', async () => {
+    comp.ngOnInit();
+    await vi.waitFor(() => expect(comp.embedUrl()).not.toBeNull());
+
+    const spy = vi.fn();
+    comp.fileSelected.subscribe(spy);
+
+    const msg = { type: 'huly-embed-file-selected' as const, fileId: 'file-1' };
+    messages$.next(msg);
+    expect(spy).toHaveBeenCalledWith(msg);
+  });
+
+  it('passes extraParams to buildUrl', async () => {
+    comp.extraParams = { document: 'doc-1', readonly: true };
+    comp.ngOnInit();
+    await vi.waitFor(() => expect(comp.embedUrl()).not.toBeNull());
+
+    expect(mockEmbedService.buildUrl).toHaveBeenCalledWith('create-issue', 'test-token', {
+      project: undefined,
+      issue: undefined,
+      externalUser: undefined,
+      hideFields: undefined,
+      extraParams: { document: 'doc-1', readonly: true },
+    });
   });
 
   it('cleans up subscription and refresher on destroy', async () => {
