@@ -28,6 +28,7 @@ import { HulyCommentsComponent } from '@huly-embed/angular';
             [issueId]="issueId()"
             [project]="project"
             [externalUser]="externalUser"
+            (resized)="event.emit('comments: resize ' + $event.height + 'px')"
           >
           </huly-comments>
         } @else {

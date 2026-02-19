@@ -1,4 +1,4 @@
-import { useState, useCallback, type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import type {
   HulyEmbedComponent,
   EmbedHideableField,
@@ -34,6 +34,7 @@ export interface HulyEmbedProps {
   onFileSelected?: (event: HulyFileSelectedEvent) => void;
   onResize?: (event: HulyResizeEvent) => void;
   onError?: (event: HulyEmbedError) => void;
+  height?: string;
   loadingContent?: ReactNode;
   errorContent?: ReactNode;
 }
@@ -55,9 +56,12 @@ export function HulyEmbed({
   onFileSelected,
   onResize,
   onError,
+  height,
   loadingContent,
   errorContent,
 }: HulyEmbedProps) {
+  const [autoHeight, setAutoHeight] = useState<string | undefined>();
+
   const { embedUrl, loading, error, retry } = useHulyEmbed({
     component,
     project,
@@ -66,8 +70,6 @@ export function HulyEmbed({
     hideFields,
     extraParams,
   });
-
-  const [iframeHeight, setIframeHeight] = useState<number | null>(null);
 
   const handleMessage = useCallback(
     (message: HulyEmbedMessage) => {
@@ -98,7 +100,9 @@ export function HulyEmbed({
           onFileSelected?.(message as HulyFileSelectedEvent);
           break;
         case EmbedMessageTypes.Resize:
-          setIframeHeight((message as HulyResizeEvent).height);
+          if (height === 'auto') {
+            setAutoHeight((message as HulyResizeEvent).height + 'px');
+          }
           onResize?.(message as HulyResizeEvent);
           break;
         case EmbedMessageTypes.Error:
@@ -106,7 +110,7 @@ export function HulyEmbed({
           break;
       }
     },
-    [onReady, onIssueCreated, onIssueCancelled, onIssueSelected, onIssueClosed, onDocumentCreated, onDocumentSelected, onFileSelected, onResize, onError]
+    [onReady, onIssueCreated, onIssueCancelled, onIssueSelected, onIssueClosed, onDocumentCreated, onDocumentSelected, onFileSelected, onResize, onError, height]
   );
 
   useHulyMessages(handleMessage);
@@ -125,7 +129,12 @@ export function HulyEmbed({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+    <div style={{
+      position: 'relative',
+      flex: (height === 'auto' ? (autoHeight ? 'none' : 1) : (height ? 'none' : 1)),
+      height: height === 'auto' ? (autoHeight || undefined) : (height || undefined),
+      minHeight: 0,
+    }}>
       {loading && (
         <div className="huly-embed-loading">
           {loadingContent ?? <div className="huly-embed-spinner" />}
@@ -135,12 +144,13 @@ export function HulyEmbed({
         <iframe
           src={embedUrl}
           style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
             width: '100%',
-            height: iframeHeight ? `${iframeHeight}px` : '100%',
-            minHeight: 400,
+            height: '100%',
             border: 'none',
             display: loading ? 'none' : 'block',
-            flex: 1,
           }}
           allow="clipboard-write"
         />

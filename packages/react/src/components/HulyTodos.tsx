@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyTodosProps
-  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onError'> {
+  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {
   mode?: string;
 }
 

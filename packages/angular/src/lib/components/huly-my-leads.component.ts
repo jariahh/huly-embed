@@ -1,4 +1,5 @@
-import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
+import type { HulyResizeEvent } from '@huly-embed/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
 @Component({
@@ -11,6 +12,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
     <huly-embed
       component="my-leads"
       [externalUser]="externalUser"
+      (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
       <ng-content select="[error]" error></ng-content>
@@ -19,6 +21,8 @@ import { HulyEmbedComponent } from './huly-embed.component';
 })
 export class HulyMyLeadsComponent implements OnChanges {
   @Input() externalUser?: string;
+
+  @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 
   constructor(private readonly cdr: ChangeDetectorRef) {}
 

@@ -3,7 +3,7 @@ import type { HulyDocumentCreatedEvent } from '@huly-embed/core';
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyCreateDocumentProps
-  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onError'> {
+  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {
   space?: string;
   onDocumentCreated?: (event: HulyDocumentCreatedEvent) => void;
 }

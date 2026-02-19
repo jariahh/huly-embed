@@ -12,6 +12,7 @@ import {
   signal,
   ElementRef,
   ViewChild,
+  HostBinding,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, type SafeResourceUrl } from '@angular/platform-browser';
@@ -41,13 +42,16 @@ import { HulyMessageService } from '../services/huly-message.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     :host {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+      display: block;
+      position: relative;
       min-height: 0;
     }
     iframe {
-      flex: 1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   `],
   template: `
@@ -65,8 +69,6 @@ import { HulyMessageService } from '../services/huly-message.service';
       <iframe
         #embedIframe
         [src]="embedUrl()"
-        [style.height]="iframeHeight() ? iframeHeight() + 'px' : '100%'"
-        [style.min-height.px]="minHeight"
         [style.display]="loading() ? 'none' : 'block'"
         style="width: 100%; border: none;"
         allow="clipboard-write"
@@ -81,7 +83,18 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
   @Input() externalUser?: string;
   @Input() hideFields?: EmbedHideableField[];
   @Input() extraParams?: Record<string, string | boolean | undefined>;
-  @Input() minHeight = 400;
+  @Input() height?: string;
+
+  private readonly autoHeight = signal<string | null>(null);
+
+  @HostBinding('style.height') get hostHeight() {
+    if (this.height === 'auto') return this.autoHeight() || null;
+    return this.height || null;
+  }
+  @HostBinding('style.flex') get hostFlex() {
+    if (this.height === 'auto') return this.autoHeight() ? 'none' : '1';
+    return this.height ? 'none' : '1';
+  }
 
   @Output() readonly ready = new EventEmitter<void>();
   @Output() readonly issueCreated = new EventEmitter<HulyIssueCreatedEvent>();
@@ -99,8 +112,6 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
   readonly embedUrl = signal<SafeResourceUrl | null>(null);
   readonly loading = signal(true);
   readonly errorMessage = signal<string | null>(null);
-  readonly iframeHeight = signal<number | null>(null);
-
   private subscription?: Subscription;
   private destroyRefresher?: () => void;
 
@@ -143,7 +154,9 @@ export class HulyEmbedComponent implements OnInit, OnDestroy, OnChanges {
           this.fileSelected.emit(message);
           break;
         case EmbedMessageTypes.Resize:
-          this.iframeHeight.set(message.height);
+          if (this.height === 'auto') {
+            this.autoHeight.set(message.height + 'px');
+          }
           this.resized.emit(message);
           break;
         case EmbedMessageTypes.Error:

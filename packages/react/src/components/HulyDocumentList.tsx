@@ -2,7 +2,7 @@ import type { HulyDocumentSelectedEvent } from '@huly-embed/core';
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyDocumentListProps
-  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onError'> {
+  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {
   onDocumentSelected?: (event: HulyDocumentSelectedEvent) => void;
 }
 

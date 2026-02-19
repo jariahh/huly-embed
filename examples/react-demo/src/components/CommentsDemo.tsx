@@ -31,6 +31,7 @@ export function CommentsDemo({ project, externalUser, onEvent }: Props) {
             project={project}
             externalUser={externalUser}
             onReady={() => onEvent(`comments: ready (${issueId})`)}
+            onResize={(e) => onEvent(`comments: resize ${e.height}px`)}
             onError={(e) => onEvent(`error: ${e.reason}`)}
             loadingContent={<div className="loading-text">Loading comments...</div>}
             errorContent={<div className="error-text">Failed to load. Check backend is running.</div>}

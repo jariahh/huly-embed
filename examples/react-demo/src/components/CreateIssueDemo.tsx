@@ -67,6 +67,7 @@ export function CreateIssueDemo({ project, externalUser, onEvent }: Props) {
           onReady={() => onEvent('create-issue: ready')}
           onIssueCreated={(e) => onEvent(`issue-created: ${e.identifier}`)}
           onIssueCancelled={() => onEvent('issue-cancelled')}
+          onResize={(e) => onEvent(`create-issue: resize ${e.height}px`)}
           onError={(e) => onEvent(`error: ${e.reason}`)}
           loadingContent={<div className="loading-text">Loading create issue form...</div>}
           errorContent={<div className="error-text">Failed to load. Check backend is running.</div>}

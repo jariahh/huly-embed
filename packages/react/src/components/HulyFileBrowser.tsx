@@ -3,7 +3,7 @@ import type { HulyFileSelectedEvent } from '@huly-embed/core';
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyFileBrowserProps
-  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onError'> {
+  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {
   drive?: string;
   folder?: string;
   readonly?: boolean;

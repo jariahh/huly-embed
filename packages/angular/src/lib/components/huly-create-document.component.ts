@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
-import type { HulyDocumentCreatedEvent } from '@huly-embed/core';
+import type { HulyDocumentCreatedEvent, HulyResizeEvent } from '@huly-embed/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
 @Component({
@@ -14,6 +14,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       [externalUser]="externalUser"
       [extraParams]="{ space: space }"
       (documentCreated)="documentCreated.emit($event)"
+      (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
       <ng-content select="[error]" error></ng-content>
@@ -25,6 +26,7 @@ export class HulyCreateDocumentComponent implements OnChanges {
   @Input() externalUser?: string;
 
   @Output() readonly documentCreated = new EventEmitter<HulyDocumentCreatedEvent>();
+  @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 
   constructor(private readonly cdr: ChangeDetectorRef) {}
 

@@ -15,6 +15,7 @@ import { HulyIssueListComponent } from '@huly-embed/angular';
           [project]="project"
           [externalUser]="externalUser"
           (issueSelected)="event.emit('issue-selected: ' + $event.identifier)"
+          (resized)="event.emit('issue-list: resize ' + $event.height + 'px')"
         >
         </huly-issue-list>
       </div>

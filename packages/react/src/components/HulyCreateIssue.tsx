@@ -2,7 +2,7 @@ import type { HulyIssueCreatedEvent, HulyIssueCancelledEvent } from '@huly-embed
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyCreateIssueProps
-  extends Pick<HulyEmbedProps, 'project' | 'externalUser' | 'hideFields' | 'loadingContent' | 'errorContent' | 'onReady' | 'onError'> {
+  extends Pick<HulyEmbedProps, 'project' | 'externalUser' | 'hideFields' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {
   onIssueCreated?: (event: HulyIssueCreatedEvent) => void;
   onIssueCancelled?: (event: HulyIssueCancelledEvent) => void;
 }

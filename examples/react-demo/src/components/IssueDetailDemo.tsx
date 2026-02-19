@@ -31,6 +31,7 @@ export function IssueDetailDemo({ project, externalUser, onEvent }: Props) {
             project={project}
             externalUser={externalUser}
             onReady={() => onEvent(`issue-detail: ready (${issueId})`)}
+            onResize={(e) => onEvent(`issue-detail: resize ${e.height}px`)}
             onError={(e) => onEvent(`error: ${e.reason}`)}
             loadingContent={<div className="loading-text">Loading issue detail...</div>}
             errorContent={<div className="error-text">Failed to load. Check backend is running.</div>}

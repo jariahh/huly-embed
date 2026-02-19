@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
-import type { HulyIssueSelectedEvent } from '@huly-embed/core';
+import type { HulyIssueSelectedEvent, HulyResizeEvent } from '@huly-embed/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
 @Component({
@@ -14,6 +14,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       [project]="project"
       [externalUser]="externalUser"
       (issueSelected)="issueSelected.emit($event)"
+      (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
       <ng-content select="[error]" error></ng-content>
@@ -25,6 +26,7 @@ export class HulyKanbanComponent implements OnChanges {
   @Input() externalUser?: string;
 
   @Output() readonly issueSelected = new EventEmitter<HulyIssueSelectedEvent>();
+  @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 
   constructor(private readonly cdr: ChangeDetectorRef) {}
 

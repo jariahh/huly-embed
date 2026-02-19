@@ -54,6 +54,7 @@ export function DocumentsDemo({ externalUser, onEvent }: Props) {
             externalUser={externalUser}
             onReady={() => onEvent('document-list: ready')}
             onDocumentSelected={(e) => onEvent(`document-selected: ${e.documentId}`)}
+            onResize={(e) => onEvent(`${view}: resize ${e.height}px`)}
             onError={(e) => onEvent(`error: ${e.reason}`)}
             loadingContent={<div className="loading-text">Loading document list...</div>}
             errorContent={<div className="error-text">Failed to load.</div>}
@@ -65,6 +66,7 @@ export function DocumentsDemo({ externalUser, onEvent }: Props) {
             externalUser={externalUser}
             onReady={() => onEvent('create-document: ready')}
             onDocumentCreated={(e) => onEvent(`document-created: ${e.documentId}`)}
+            onResize={(e) => onEvent(`${view}: resize ${e.height}px`)}
             onError={(e) => onEvent(`error: ${e.reason}`)}
             loadingContent={<div className="loading-text">Loading create document...</div>}
             errorContent={<div className="error-text">Failed to load.</div>}
@@ -76,7 +78,8 @@ export function DocumentsDemo({ externalUser, onEvent }: Props) {
               documentId={documentId}
               externalUser={externalUser}
               onReady={() => onEvent(`document: ready (${documentId})`)}
-              onError={(e) => onEvent(`error: ${e.reason}`)}
+              onResize={(e) => onEvent(`${view}: resize ${e.height}px`)}
+            onError={(e) => onEvent(`error: ${e.reason}`)}
               loadingContent={<div className="loading-text">Loading document...</div>}
               errorContent={<div className="error-text">Failed to load.</div>}
             />

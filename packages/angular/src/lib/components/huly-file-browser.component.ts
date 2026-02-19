@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
-import type { HulyFileSelectedEvent } from '@huly-embed/core';
+import type { HulyFileSelectedEvent, HulyResizeEvent } from '@huly-embed/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
 @Component({
@@ -14,6 +14,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       [externalUser]="externalUser"
       [extraParams]="{ drive: drive, folder: folder, readonly: isReadonly }"
       (fileSelected)="fileSelected.emit($event)"
+      (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
       <ng-content select="[error]" error></ng-content>
@@ -27,6 +28,7 @@ export class HulyFileBrowserComponent implements OnChanges {
   @Input() externalUser?: string;
 
   @Output() readonly fileSelected = new EventEmitter<HulyFileSelectedEvent>();
+  @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 
   constructor(private readonly cdr: ChangeDetectorRef) {}
 

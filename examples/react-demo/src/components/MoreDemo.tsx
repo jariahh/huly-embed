@@ -66,7 +66,7 @@ export function MoreDemo({ project, externalUser, onEvent }: Props) {
   const loadingEl = <div className="loading-text">Loading {view}...</div>;
   const errorEl = <div className="error-text">Failed to load.</div>;
   const emptyEl = <div className="empty-state">Enter {idLabel[view]} above.</div>;
-  const shared = { externalUser, onReady: () => onEvent(`${view}: ready`), onError: (e: { reason: string }) => onEvent(`error: ${e.reason}`), loadingContent: loadingEl, errorContent: errorEl };
+  const shared = { externalUser, onReady: () => onEvent(`${view}: ready`), onResize: (e: { height: number }) => onEvent(`${view}: resize ${e.height}px`), onError: (e: { reason: string }) => onEvent(`error: ${e.reason}`), loadingContent: loadingEl, errorContent: errorEl };
 
   return (
     <div className="demo-section">

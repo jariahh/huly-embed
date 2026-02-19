@@ -44,6 +44,7 @@ const ALL_HIDEABLE_FIELDS: EmbedHideableField[] = [
           [hideFields]="hideFields()"
           (issueCreated)="event.emit('issue-created: ' + $event.identifier)"
           (issueCancelled)="event.emit('issue-cancelled')"
+          (resized)="event.emit('create-issue: resize ' + $event.height + 'px')"
         >
         </huly-create-issue>
       </div>

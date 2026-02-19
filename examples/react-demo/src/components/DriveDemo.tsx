@@ -54,6 +54,7 @@ export function DriveDemo({ externalUser, onEvent }: Props) {
             externalUser={externalUser}
             onReady={() => onEvent('file-browser: ready')}
             onFileSelected={(e) => onEvent(`file-selected: ${e.fileId}`)}
+            onResize={(e) => onEvent(`${view}: resize ${e.height}px`)}
             onError={(e) => onEvent(`error: ${e.reason}`)}
             loadingContent={<div className="loading-text">Loading file browser...</div>}
             errorContent={<div className="error-text">Failed to load.</div>}
@@ -65,7 +66,8 @@ export function DriveDemo({ externalUser, onEvent }: Props) {
               fileId={fileId}
               externalUser={externalUser}
               onReady={() => onEvent(`file-detail: ready (${fileId})`)}
-              onError={(e) => onEvent(`error: ${e.reason}`)}
+              onResize={(e) => onEvent(`${view}: resize ${e.height}px`)}
+            onError={(e) => onEvent(`error: ${e.reason}`)}
               loadingContent={<div className="loading-text">Loading file detail...</div>}
               errorContent={<div className="error-text">Failed to load.</div>}
             />

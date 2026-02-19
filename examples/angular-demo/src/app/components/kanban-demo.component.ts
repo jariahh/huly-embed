@@ -15,6 +15,7 @@ import { HulyKanbanComponent } from '@huly-embed/angular';
           [project]="project"
           [externalUser]="externalUser"
           (issueSelected)="event.emit('kanban issue-selected: ' + $event.identifier)"
+          (resized)="event.emit('kanban: resize ' + $event.height + 'px')"
         >
         </huly-kanban>
       </div>

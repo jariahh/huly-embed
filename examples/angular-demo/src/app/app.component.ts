@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CreateIssueDemoComponent } from './components/create-issue-demo.component';
 import { IssueListDemoComponent } from './components/issue-list-demo.component';
@@ -12,6 +12,19 @@ import { CustomEmbedDemoComponent } from './components/custom-embed-demo.compone
 import { EventLogComponent } from './components/event-log.component';
 
 type Tab = 'create-issue' | 'issues' | 'detail' | 'kanban' | 'comments' | 'docs' | 'drive' | 'more' | 'custom';
+
+const STORAGE_KEY = 'huly-demo-state';
+
+function loadPersistedState(): { tab?: Tab; project?: string; externalUser?: string; settingsOpen?: boolean } {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
+
+const _saved = loadPersistedState();
 
 interface LogEntry {
   time: string;
@@ -178,11 +191,22 @@ export class AppComponent {
     { id: 'custom' as Tab, label: 'Custom' },
   ];
 
-  activeTab = signal<Tab>('create-issue');
-  settingsOpen = signal(false);
-  project = signal('');
-  externalUser = signal('');
+  activeTab = signal<Tab>(_saved.tab ?? 'create-issue');
+  settingsOpen = signal(_saved.settingsOpen ?? false);
+  project = signal(_saved.project ?? '');
+  externalUser = signal(_saved.externalUser ?? '');
   logs = signal<LogEntry[]>([]);
+
+  constructor() {
+    effect(() => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        tab: this.activeTab(),
+        project: this.project(),
+        externalUser: this.externalUser(),
+        settingsOpen: this.settingsOpen(),
+      }));
+    });
+  }
 
   addLog(message: string) {
     const now = new Date();

@@ -28,6 +28,7 @@ import { HulyIssueDetailComponent } from '@huly-embed/angular';
             [issueId]="issueId()"
             [project]="project"
             [externalUser]="externalUser"
+            (resized)="event.emit('issue-detail: resize ' + $event.height + 'px')"
           >
           </huly-issue-detail>
         } @else {

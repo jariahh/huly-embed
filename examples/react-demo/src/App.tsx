@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { CreateIssueDemo } from './components/CreateIssueDemo';
 import { IssueListDemo } from './components/IssueListDemo';
 import { IssueDetailDemo } from './components/IssueDetailDemo';
@@ -11,6 +11,17 @@ import { CustomEmbedDemo } from './components/CustomEmbedDemo';
 import { EventLog } from './components/EventLog';
 
 type Tab = 'create-issue' | 'issues' | 'detail' | 'kanban' | 'comments' | 'docs' | 'drive' | 'more' | 'custom';
+
+const STORAGE_KEY = 'huly-demo-state';
+
+function loadPersistedState(): { tab?: Tab; project?: string; externalUser?: string; settingsOpen?: boolean } {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+}
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'create-issue', label: 'Create Issue' },
@@ -30,11 +41,16 @@ export interface LogEntry {
 }
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<Tab>('create-issue');
+  const saved = loadPersistedState();
+  const [activeTab, setActiveTab] = useState<Tab>(saved.tab ?? 'create-issue');
   const [logs, setLogs] = useState<LogEntry[]>([]);
-  const [project, setProject] = useState('');
-  const [externalUser, setExternalUser] = useState('');
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [project, setProject] = useState(saved.project ?? '');
+  const [externalUser, setExternalUser] = useState(saved.externalUser ?? '');
+  const [settingsOpen, setSettingsOpen] = useState(saved.settingsOpen ?? false);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ tab: activeTab, project, externalUser, settingsOpen }));
+  }, [activeTab, project, externalUser, settingsOpen]);
 
   const addLog = useCallback((message: string) => {
     const now = new Date();

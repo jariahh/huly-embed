@@ -3,7 +3,7 @@ import type { HulyIssueSelectedEvent } from '@huly-embed/core';
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyBoardProps
-  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onError'> {
+  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {
   space?: string;
   onIssueSelected?: (event: HulyIssueSelectedEvent) => void;
 }

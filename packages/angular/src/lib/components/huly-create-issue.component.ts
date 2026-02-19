@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnChanges } from '@angular/core';
-import type { HulyIssueCreatedEvent, HulyIssueCancelledEvent, EmbedHideableField } from '@huly-embed/core';
+import type { HulyIssueCreatedEvent, HulyIssueCancelledEvent, EmbedHideableField, HulyResizeEvent } from '@huly-embed/core';
 import { HulyEmbedComponent } from './huly-embed.component';
 
 @Component({
@@ -16,6 +16,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       [hideFields]="hideFields"
       (issueCreated)="issueCreated.emit($event)"
       (issueCancelled)="issueCancelled.emit($event)"
+      (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
       <ng-content select="[error]" error></ng-content>
@@ -29,6 +30,7 @@ export class HulyCreateIssueComponent implements OnChanges {
 
   @Output() readonly issueCreated = new EventEmitter<HulyIssueCreatedEvent>();
   @Output() readonly issueCancelled = new EventEmitter<HulyIssueCancelledEvent>();
+  @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 
   constructor(private readonly cdr: ChangeDetectorRef) {}
 

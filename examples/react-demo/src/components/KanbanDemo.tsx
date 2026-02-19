@@ -18,6 +18,7 @@ export function KanbanDemo({ project, externalUser, onEvent }: Props) {
           externalUser={externalUser}
           onReady={() => onEvent('kanban: ready')}
           onIssueSelected={(e) => onEvent(`kanban issue-selected: ${e.identifier}`)}
+          onResize={(e) => onEvent(`kanban: resize ${e.height}px`)}
           onError={(e) => onEvent(`error: ${e.reason}`)}
           loadingContent={<div className="loading-text">Loading kanban board...</div>}
           errorContent={<div className="error-text">Failed to load. Check backend is running.</div>}
