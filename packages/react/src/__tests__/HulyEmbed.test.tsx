@@ -187,9 +187,9 @@ describe('HulyEmbed', () => {
     expect(onIssueClosed).toHaveBeenCalledWith(msg);
   });
 
-  it('calls onResize and updates iframe height', async () => {
+  it('calls onResize and auto-sizes container in auto mode', async () => {
     const onResize = vi.fn();
-    renderEmbed({ onResize });
+    renderEmbed({ onResize, height: 'auto' });
 
     await vi.waitFor(() => {
       expect(document.querySelector('iframe')).not.toBeNull();
@@ -205,7 +205,11 @@ describe('HulyEmbed', () => {
     expect(onResize).toHaveBeenCalledWith(msg);
     await vi.waitFor(() => {
       const iframe = document.querySelector('iframe');
-      expect(iframe!.style.height).toBe('800px');
+      // iframe always uses 100% height (absolute positioned)
+      expect(iframe!.style.height).toBe('100%');
+      // container auto-sizes to content height
+      const container = iframe!.parentElement!;
+      expect(container.style.height).toBe('800px');
     });
   });
 

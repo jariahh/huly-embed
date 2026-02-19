@@ -138,12 +138,18 @@ describe('HulyEmbedComponent', () => {
     expect(spy).toHaveBeenCalledWith(msg);
   });
 
-  it('updates iframeHeight on Resize message', async () => {
+  it('emits resized event and auto-sizes when height is auto', async () => {
+    comp.height = 'auto';
     comp.ngOnInit();
     await vi.waitFor(() => expect(comp.embedUrl()).not.toBeNull());
 
+    const spy = vi.fn();
+    comp.resized.subscribe(spy);
+
     messages$.next({ type: 'huly-embed-resize', height: 800 });
-    expect(comp.iframeHeight()).toBe(800);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(comp.hostHeight).toBe('800px');
+    expect(comp.hostFlex).toBe('none');
   });
 
   it('sets errorMessage on Error message', async () => {
