@@ -13,6 +13,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="department-staff"
       [externalUser]="externalUser"
       [extraParams]="{ department: departmentId }"
+      [height]="height"
       (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
@@ -23,6 +24,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
 export class HulyDepartmentStaffComponent implements OnChanges {
   @Input({ required: true }) departmentId!: string;
   @Input() externalUser?: string;
+  @Input() height?: string;
 
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 

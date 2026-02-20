@@ -1,13 +1,14 @@
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyCreateProjectProps
-  extends Pick<HulyEmbedProps, 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {}
+  extends Pick<HulyEmbedProps, 'externalUser' | 'height' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {}
 
-export function HulyCreateProject(props: HulyCreateProjectProps) {
+export function HulyCreateProject({ height = 'auto', ...rest }: HulyCreateProjectProps) {
   return (
     <HulyEmbed
       component="create-project"
-      {...props}
+      height={height}
+      {...rest}
     />
   );
 }

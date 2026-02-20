@@ -526,6 +526,10 @@ body {
   min-height: 0;
 }
 
+.embed-container--auto {
+  flex: none;
+}
+
 /* ── Debug Panel (Custom tab) ─────────────────────── */
 
 .debug-panel {

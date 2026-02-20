@@ -13,6 +13,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="applications"
       [externalUser]="externalUser"
       [extraParams]="{ application: applicationId, space: space, readonly: isReadonly }"
+      [height]="height"
       (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
@@ -25,6 +26,7 @@ export class HulyApplicationsComponent implements OnChanges {
   @Input() space?: string;
   @Input('readonly') isReadonly?: boolean;
   @Input() externalUser?: string;
+  @Input() height?: string;
 
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 

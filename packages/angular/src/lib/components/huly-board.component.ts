@@ -13,6 +13,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="board"
       [externalUser]="externalUser"
       [extraParams]="{ space: space }"
+      [height]="height"
       (issueSelected)="issueSelected.emit($event)"
       (resized)="resized.emit($event)"
     >
@@ -24,6 +25,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
 export class HulyBoardComponent implements OnChanges {
   @Input() space?: string;
   @Input() externalUser?: string;
+  @Input() height?: string;
 
   @Output() readonly issueSelected = new EventEmitter<HulyIssueSelectedEvent>();
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();

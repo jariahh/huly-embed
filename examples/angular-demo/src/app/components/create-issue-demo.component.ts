@@ -37,7 +37,7 @@ const ALL_HIDEABLE_FIELDS: EmbedHideableField[] = [
           </label>
         }
       </div>
-      <div class="embed-container">
+      <div class="embed-container embed-container--auto">
         <huly-create-issue
           [project]="project"
           [externalUser]="externalUser"

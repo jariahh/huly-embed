@@ -12,6 +12,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
     <huly-embed
       component="document-list"
       [externalUser]="externalUser"
+      [height]="height"
       (documentSelected)="documentSelected.emit($event)"
       (resized)="resized.emit($event)"
     >
@@ -22,6 +23,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
 })
 export class HulyDocumentListComponent implements OnChanges {
   @Input() externalUser?: string;
+  @Input() height?: string;
 
   @Output() readonly documentSelected = new EventEmitter<HulyDocumentSelectedEvent>();
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();

@@ -14,6 +14,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       [project]="project"
       [issueId]="issueId"
       [externalUser]="externalUser"
+      [height]="height"
       (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
@@ -25,6 +26,7 @@ export class HulyIssueDetailComponent implements OnChanges {
   @Input({ required: true }) issueId!: string;
   @Input() project?: string;
   @Input() externalUser?: string;
+  @Input() height: string = 'auto';
 
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 

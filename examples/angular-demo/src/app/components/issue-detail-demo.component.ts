@@ -22,7 +22,7 @@ import { HulyIssueDetailComponent } from '@huly-embed/angular';
         />
         <button class="load-btn" (click)="loadIssue()">Load</button>
       </div>
-      <div class="embed-container">
+      <div class="embed-container embed-container--auto">
         @if (issueId()) {
           <huly-issue-detail
             [issueId]="issueId()"

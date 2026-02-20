@@ -24,7 +24,7 @@ export function IssueDetailDemo({ project, externalUser, onEvent }: Props) {
           placeholder="DEMO-1"
         />
       </div>
-      <div className="embed-container">
+      <div className="embed-container embed-container--auto">
         {issueId ? (
           <HulyIssueDetail
             issueId={issueId}

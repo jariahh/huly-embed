@@ -13,6 +13,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="issue-list"
       [project]="project"
       [externalUser]="externalUser"
+      [height]="height"
       (issueSelected)="issueSelected.emit($event)"
       (resized)="resized.emit($event)"
     >
@@ -24,6 +25,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
 export class HulyIssueListComponent implements OnChanges {
   @Input() project?: string;
   @Input() externalUser?: string;
+  @Input() height?: string;
 
   @Output() readonly issueSelected = new EventEmitter<HulyIssueSelectedEvent>();
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();

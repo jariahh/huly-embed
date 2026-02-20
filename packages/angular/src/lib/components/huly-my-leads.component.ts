@@ -12,6 +12,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
     <huly-embed
       component="my-leads"
       [externalUser]="externalUser"
+      [height]="height"
       (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
@@ -21,6 +22,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
 })
 export class HulyMyLeadsComponent implements OnChanges {
   @Input() externalUser?: string;
+  @Input() height?: string;
 
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 

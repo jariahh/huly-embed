@@ -1,13 +1,14 @@
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyIssueTemplatesProps
-  extends Pick<HulyEmbedProps, 'project' | 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {}
+  extends Pick<HulyEmbedProps, 'project' | 'externalUser' | 'height' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {}
 
-export function HulyIssueTemplates(props: HulyIssueTemplatesProps) {
+export function HulyIssueTemplates({ height, ...rest }: HulyIssueTemplatesProps) {
   return (
     <HulyEmbed
       component="issue-templates"
-      {...props}
+      height={height}
+      {...rest}
     />
   );
 }

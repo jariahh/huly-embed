@@ -1,13 +1,14 @@
 import { HulyEmbed, type HulyEmbedProps } from './HulyEmbed.js';
 
 export interface HulyMilestonesProps
-  extends Pick<HulyEmbedProps, 'project' | 'externalUser' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {}
+  extends Pick<HulyEmbedProps, 'project' | 'externalUser' | 'height' | 'loadingContent' | 'errorContent' | 'onReady' | 'onResize' | 'onError'> {}
 
-export function HulyMilestones(props: HulyMilestonesProps) {
+export function HulyMilestones({ height, ...rest }: HulyMilestonesProps) {
   return (
     <HulyEmbed
       component="milestones"
-      {...props}
+      height={height}
+      {...rest}
     />
   );
 }

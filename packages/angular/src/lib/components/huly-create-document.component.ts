@@ -13,6 +13,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="create-document"
       [externalUser]="externalUser"
       [extraParams]="{ space: space }"
+      [height]="height"
       (documentCreated)="documentCreated.emit($event)"
       (resized)="resized.emit($event)"
     >
@@ -24,6 +25,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
 export class HulyCreateDocumentComponent implements OnChanges {
   @Input() space?: string;
   @Input() externalUser?: string;
+  @Input() height: string = 'auto';
 
   @Output() readonly documentCreated = new EventEmitter<HulyDocumentCreatedEvent>();
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();

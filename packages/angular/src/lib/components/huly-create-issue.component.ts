@@ -14,6 +14,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       [project]="project"
       [externalUser]="externalUser"
       [hideFields]="hideFields"
+      [height]="height"
       (issueCreated)="issueCreated.emit($event)"
       (issueCancelled)="issueCancelled.emit($event)"
       (resized)="resized.emit($event)"
@@ -27,6 +28,7 @@ export class HulyCreateIssueComponent implements OnChanges {
   @Input() project?: string;
   @Input() externalUser?: string;
   @Input() hideFields?: EmbedHideableField[];
+  @Input() height: string = 'auto';
 
   @Output() readonly issueCreated = new EventEmitter<HulyIssueCreatedEvent>();
   @Output() readonly issueCancelled = new EventEmitter<HulyIssueCancelledEvent>();

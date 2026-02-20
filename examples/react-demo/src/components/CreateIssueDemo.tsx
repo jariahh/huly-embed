@@ -59,7 +59,7 @@ export function CreateIssueDemo({ project, externalUser, onEvent }: Props) {
           </label>
         ))}
       </div>
-      <div className="embed-container">
+      <div className="embed-container embed-container--auto">
         <HulyCreateIssue
           project={project}
           externalUser={externalUser}

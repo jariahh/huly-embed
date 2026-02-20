@@ -13,6 +13,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="file-browser"
       [externalUser]="externalUser"
       [extraParams]="{ drive: drive, folder: folder, readonly: isReadonly }"
+      [height]="height"
       (fileSelected)="fileSelected.emit($event)"
       (resized)="resized.emit($event)"
     >
@@ -26,6 +27,7 @@ export class HulyFileBrowserComponent implements OnChanges {
   @Input() folder?: string;
   @Input('readonly') isReadonly?: boolean;
   @Input() externalUser?: string;
+  @Input() height?: string;
 
   @Output() readonly fileSelected = new EventEmitter<HulyFileSelectedEvent>();
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();

@@ -537,6 +537,10 @@ body {
   min-height: 0;
 }
 
+.embed-container--auto {
+  flex: none;
+}
+
 /* Host element styles for Angular components in flex chain */
 app-create-issue-demo,
 app-issue-list-demo,

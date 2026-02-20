@@ -13,6 +13,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="thread"
       [externalUser]="externalUser"
       [extraParams]="{ thread: threadId, readonly: isReadonly }"
+      [height]="height"
       (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
@@ -24,6 +25,7 @@ export class HulyThreadComponent implements OnChanges {
   @Input({ required: true }) threadId!: string;
   @Input('readonly') isReadonly?: boolean;
   @Input() externalUser?: string;
+  @Input() height: string = 'auto';
 
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 

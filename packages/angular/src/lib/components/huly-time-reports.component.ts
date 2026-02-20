@@ -13,6 +13,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
       component="time-reports"
       [issueId]="issueId"
       [externalUser]="externalUser"
+      [height]="height"
       (resized)="resized.emit($event)"
     >
       <ng-content select="[loading]" loading></ng-content>
@@ -23,6 +24,7 @@ import { HulyEmbedComponent } from './huly-embed.component';
 export class HulyTimeReportsComponent implements OnChanges {
   @Input({ required: true }) issueId!: string;
   @Input() externalUser?: string;
+  @Input() height: string = 'auto';
 
   @Output() readonly resized = new EventEmitter<HulyResizeEvent>();
 
